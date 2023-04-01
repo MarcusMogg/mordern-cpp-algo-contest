@@ -1,0 +1,9 @@
+BasedOnStyle: Google
+Standard: Latest
+AlignAfterOpenBracket: AlwaysBreak
+BinPackArguments: false
+BinPackParameters: false
+DerivePointerAlignment: false
+PointerAlignment: Left
+ColumnLimit: 100
+IncludeBlocks: Regroup
