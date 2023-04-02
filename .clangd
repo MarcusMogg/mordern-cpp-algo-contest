@@ -23,6 +23,7 @@ Diagnostics:
       - "readability-identifier-length"
       - "bugprone-narrowing-conversions"
       - "google-build-using-namespace"
+      - "misc-no-recursion"
     CheckOptions:
       readability-identifier-naming.NamespaceCase: lower_case 
       readability-identifier-naming.ClassCase: CamelCase 

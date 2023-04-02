@@ -1,6 +1,10 @@
+add_requires("argparse","fmt","nlohmann_json","libcurl")
+
 target("leetcode-api")
     set_kind("binary")
     add_files("*.cc")
+    add_packages("argparse","fmt","nlohmann_json","libcurl")
+    set_languages("c++20")
     after_build(function (target)
         import("core.project.config")
         local targetfile = target:targetfile()
