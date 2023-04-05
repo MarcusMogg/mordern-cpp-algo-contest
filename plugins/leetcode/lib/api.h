@@ -13,7 +13,7 @@ class ICommand {
  public:
   explicit ICommand(std::string_view name);
   ICommand(ICommand&) = delete;
-  ICommand(ICommand&& rhs) noexcept = delete;
+  ICommand(ICommand&& rhs) noexcept = default;
 
   virtual ~ICommand();
 
@@ -80,5 +80,10 @@ class GeneratorCommand final : public ICommand {
   static constexpr std::string_view kProblemName = "problem-name";
   static constexpr std::string_view kFroceName = "--force";
   static constexpr std::string_view kBuildName = "--build-dir";
+
+  static size_t CallBack(void* contents, size_t size, size_t nmemb, void* userp) {
+    (static_cast<std::string*>(userp))->append(static_cast<char*>(contents), size * nmemb);
+    return size * nmemb;
+  };
 };
 }  // namespace leetcodeapi

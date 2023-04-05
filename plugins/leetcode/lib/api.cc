@@ -1,9 +1,15 @@
 #include "api.h"
 
+#include <exception>
+#include <filesystem>
+#include <format>
+#include <fstream>
 #include <iostream>
 #include <memory>
 #include <string_view>
 
+#include "curl/curl.h"
+#include "nlohmann/json.hpp"
 namespace leetcodeapi {
 
 ICommand::ICommand(std::string_view name)
@@ -44,6 +50,54 @@ void GeneratorCommand::RealWork() {
   }
 }
 
-void GeneratorCommand::GetMeta() { std::cout << GetMetaOutputPath(); }
+void GeneratorCommand::GetMeta() {
+  auto* handle = curl_easy_init();
+  if (handle == nullptr) {
+    return;
+  }
+  [[maybe_unused]] std::shared_ptr<CURL> auto_clean(handle, curl_easy_cleanup);
+
+  // well, maybe they use vernier calipers
+  const auto data = std::format(
+      R"({{
+        "operationName":"questionData",
+        "variables":{{"titleSlug":"{}"}},
+        "query": "query questionData($titleSlug: String!) {{\n question(titleSlug: $titleSlug) {{\n    questionId\n    metaData\n    exampleTestcases\n  }}\n}}"
+        }})",
+      ProblemName());
+  curl_easy_setopt(handle, CURLOPT_URL, "https://leetcode.com/graphql");  // the URL to post to
+  curl_easy_setopt(handle, CURLOPT_POST, 1L);
+
+  curl_slist* headers = nullptr;  // init to NULL is important
+  [[maybe_unused]] std::shared_ptr<curl_slist> auto_clean_headers(headers, curl_slist_free_all);
+  headers = curl_slist_append(headers, "Content-Type: application/json");
+  curl_easy_setopt(handle, CURLOPT_HTTPHEADER, headers);
+
+  curl_easy_setopt(handle, CURLOPT_POSTFIELDS, data.c_str());      // the data to send
+  curl_easy_setopt(handle, CURLOPT_POSTFIELDSIZE, data.length());  // the size of the data
+  std::string read_buffer;
+  curl_easy_setopt(handle, CURLOPT_WRITEFUNCTION, CallBack);
+  curl_easy_setopt(handle, CURLOPT_WRITEDATA, &read_buffer);
+
+  const auto res = curl_easy_perform(handle);  // perform the request
+  if (res != CURLE_OK) {
+    std::cout << std::format("curl_easy_perform() failed: {}\n", curl_easy_strerror(res));
+    return;
+  }
+
+  try {
+    const auto response = nlohmann::json::parse(read_buffer);
+    auto meta = nlohmann::json::parse(response["data"]["question"]["metaData"].get<std::string>());
+    meta["exampleTestcases"] = response["data"]["question"]["exampleTestcases"];
+
+    const auto meta_path = GetMetaOutputPath();
+    std::filesystem::create_directory(meta_path.parent_path());
+    std::ofstream meta_out(meta_path);
+    meta_out << meta.dump(1);
+    meta_out.close();
+  } catch (const std::exception& e) {
+    std::cout << e.what() << "\n";
+  }
+}
 
 }  // namespace leetcodeapi
