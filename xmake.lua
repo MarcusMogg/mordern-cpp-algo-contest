@@ -1,6 +1,6 @@
 add_rules("mode.debug", "mode.release")
 
-set_languages("cxxlatest")
+set_languages("cxx20")
 
 add_plugindirs(path.join(os.projectdir(), "plugins"))
 
