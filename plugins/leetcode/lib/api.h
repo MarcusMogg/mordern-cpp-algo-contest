@@ -9,6 +9,12 @@
 #include "argparse/argparse.hpp"
 
 namespace leetcodeapi {
+
+static constexpr int kFail = -1;
+static constexpr int kSuccess = 0;
+
+inline std::string_view GetResultMsg(int ret) { return ret == kSuccess ? "success" : "fail"; }
+
 class ICommand {
  public:
   explicit ICommand(std::string_view name);
@@ -75,7 +81,7 @@ class GeneratorCommand final : public ICommand {
 
   [[nodiscard]] bool CheckMetaExist() const { return std::filesystem::exists(GetMetaOutputPath()); }
 
-  void GetMeta();
+  int GetMeta();
 
   static constexpr std::string_view kProblemName = "problem-name";
   static constexpr std::string_view kFroceName = "--force";

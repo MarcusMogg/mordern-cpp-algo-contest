@@ -46,14 +46,16 @@ std::string_view GeneratorCommand::BuildDir() const { return GetParser().get(kBu
 
 void GeneratorCommand::RealWork() {
   if (ForceUpdate() || !CheckMetaExist()) {
-    GetMeta();
+    std::cout << "Update meta begin\n";
+    int ret = GetMeta();
+    std::cout << std::format("Update meta {}\n", GetResultMsg(ret));
   }
 }
 
-void GeneratorCommand::GetMeta() {
+int GeneratorCommand::GetMeta() {
   auto* handle = curl_easy_init();
   if (handle == nullptr) {
-    return;
+    return kFail;
   }
   [[maybe_unused]] std::shared_ptr<CURL> auto_clean(handle, curl_easy_cleanup);
 
@@ -82,7 +84,7 @@ void GeneratorCommand::GetMeta() {
   const auto res = curl_easy_perform(handle);  // perform the request
   if (res != CURLE_OK) {
     std::cout << std::format("curl_easy_perform() failed: {}\n", curl_easy_strerror(res));
-    return;
+    return kFail;
   }
 
   try {
@@ -96,8 +98,10 @@ void GeneratorCommand::GetMeta() {
     meta_out << meta.dump(1);
     meta_out.close();
   } catch (const std::exception& e) {
-    std::cout << e.what() << "\n";
+    std::cout << std::format("parse leetcode response failed: {}\n", e.what());
+    return kFail;
   }
+  return kSuccess;
 }
 
 }  // namespace leetcodeapi

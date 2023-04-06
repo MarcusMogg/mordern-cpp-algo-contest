@@ -1,3 +1,4 @@
+import("core.base.option")
 import("core.base.task")
 import("core.project.rule")
 import("core.project.config")
@@ -34,6 +35,15 @@ end
 
 
 function main()
-    local api = GetProgram("leetcode-api",false)
-    os.exec(api)
+    local name = option.get("target")
+    if name == nil then
+        raise("can't find program_name")
+    end
+
+    local gen = option.get("generate") or false
+
+    if gen then
+        local api = GetProgram("leetcode-api",false)
+        os.execv(api, {"generate", format("--build-dir=%s", config.buildir()), name})
+    end
 end
