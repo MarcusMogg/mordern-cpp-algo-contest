@@ -46,4 +46,4 @@ Diagnostics:
       readability-identifier-naming.StaticConstantCase: CamelCase 
       readability-identifier-naming.StaticConstantPrefix: k 
       misc-non-private-member-variables-in-classes.IgnoreClassesWithAllMemberVariablesBeingPublic: 1 
-      readability-function-cognitive-complexity.Threshold: 100 
+      readability-function-cognitive-complexity.Threshold: 20 
