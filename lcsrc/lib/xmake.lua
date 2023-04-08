@@ -1,6 +1,5 @@
-xmaadd_requires("argparse","fmt","nlohmann_json","libcurl")
-
-target("two-sum")
+target("lc-lib")
     set_kind("static")
     add_files("*.cc")
     add_headerfiles("*.h")
+    add_includedirs("$(projectdir)/", {public = true})
