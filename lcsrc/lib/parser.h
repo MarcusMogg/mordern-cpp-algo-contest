@@ -28,15 +28,6 @@ concept CanParse = requires(std::remove_cvref_t<T> obj) {
   };
 };
 
-template <CanParse T, CanParse... Args>
-auto GetDataImpl(T&& cur, Args&&... args) {
-  if constexpr (sizeof...(args) == 0) {
-    return std::tuple<typename std::remove_cvref_t<T>::DataType>{cur.GetData()};
-  } else {
-    return std::tuple_cat(cur.GetData(), GetDataImpl(std::forward<Args>(args)...));
-  }
-}
-
 template <CanParse... Parser>
 struct TestCase {
   using DataType = std::tuple<typename Parser::DataType...>;
@@ -54,10 +45,19 @@ struct TestCase {
 
   InputType Parse(const InputType test_cases) {
     return std::apply(
-        [&test_cases]<CanParse... Args>(Args&&... parser_list) {
-          return std::invoke(ParseImpl, test_cases, std::forward<Args>(parser_list)...);
-        },
+        [&test_cases](Parser&... parser_list) { return ParseImpl(test_cases, parser_list...); },
         parsers);
+  }
+
+  template <CanParse T, CanParse... Args>
+  static auto GetDataImpl(T&& cur, Args&&... args) {
+    if constexpr (sizeof...(args) == 0) {
+      return std::tuple<typename std::remove_cvref_t<T>::DataType>{cur.GetData()};
+    } else {
+      return std::tuple_cat(
+          std::tuple<typename std::remove_cvref_t<T>::DataType>{cur.GetData()},
+          GetDataImpl(std::forward<Args>(args)...));
+    }
   }
 
   [[nodiscard]] DataType GetData() const {
