@@ -7,6 +7,7 @@ task("lc")
         usage = "xmake lc [options]",
         description = "Quick generate leetcode template and run testcase locally",
         options = {
+            {'f', "force", "k", false, "force update output"},
             {'g', "generate", "k", false, "generate template from leetcode"},
             {},
             {nil, "target", "v", nil, "problem name copy from leetcode problem url"},

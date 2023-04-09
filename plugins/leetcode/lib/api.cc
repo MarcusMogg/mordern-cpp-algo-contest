@@ -10,6 +10,7 @@
 
 #include "curl/curl.h"
 #include "nlohmann/json.hpp"
+
 namespace leetcodeapi {
 
 ICommand::ICommand(std::string_view name)
@@ -38,18 +39,25 @@ GeneratorCommand::GeneratorCommand() : ICommand("generate") {
       .add_argument(kBuildName)
       .help("generator output directory path(don't need absolute)")
       .required();
+  GetParser()
+      .add_argument(kTemplateName)
+      .help("generator output directory path(don't need absolute)")
+      .required();
 }
 
-std::string_view GeneratorCommand::ProblemName() const { return GetParser().get(kProblemName); }
+std::string GeneratorCommand::ProblemName() const { return GetParser().get(kProblemName); }
 bool GeneratorCommand::ForceUpdate() const { return GetParser().get<bool>(kFroceName); }
-std::string_view GeneratorCommand::BuildDir() const { return GetParser().get(kBuildName); }
+std::string GeneratorCommand::BuildDir() const { return GetParser().get(kBuildName); }
+std::string GeneratorCommand::TmplDir() const { return GetParser().get(kTemplateName); }
 
 void GeneratorCommand::RealWork() {
+  MakeOutputDir();
   if (ForceUpdate() || !CheckMetaExist()) {
     std::cout << "Update meta begin\n";
     int ret = GetMeta();
     std::cout << std::format("Update meta {}\n", GetResultMsg(ret));
   }
+  GenTmpl();
 }
 
 int GeneratorCommand::GetMeta() {
@@ -58,7 +66,6 @@ int GeneratorCommand::GetMeta() {
     return kFail;
   }
   [[maybe_unused]] std::shared_ptr<CURL> auto_clean(handle, curl_easy_cleanup);
-
   // well, maybe they use vernier calipers
   const auto data = std::format(
       R"({{
@@ -91,6 +98,13 @@ int GeneratorCommand::GetMeta() {
     const auto response = nlohmann::json::parse(read_buffer);
     auto meta = nlohmann::json::parse(response["data"]["question"]["metaData"].get<std::string>());
     meta["exampleTestcases"] = response["data"]["question"]["exampleTestcases"];
+    meta["program_name"] = ProblemName();
+    meta["program_cname"] = CTypeName(ProblemName());
+
+    for (auto& i : meta["params"]) {
+      i["c_type"] = LctypeToCtype(i["type"]);
+    }
+    meta["return"]["c_type"] = LctypeToCtype(meta["return"]["type"]);
 
     const auto meta_path = GetMetaOutputPath();
     std::filesystem::create_directory(meta_path.parent_path());
@@ -98,10 +112,26 @@ int GeneratorCommand::GetMeta() {
     meta_out << meta.dump(1);
     meta_out.close();
   } catch (const std::exception& e) {
-    std::cout << std::format("parse leetcode response failed: {}\n", e.what());
+    std::cout << std::format(
+        "parse leetcode response failed | response {} | error {}\n", read_buffer, e.what());
     return kFail;
   }
   return kSuccess;
 }
 
+void GeneratorCommand::MakeOutputDir() const {
+  const auto out_dir = GetOutputPath();
+  if (std::filesystem::exists(out_dir)) {
+    return;
+  }
+  std::cout << std::format("create dir {} \n", out_dir.string());
+  std::filesystem::create_directories(out_dir);
+}
+
+void GeneratorCommand::GenTmpl() const {
+  const auto tmpl_dir = std::filesystem::path(TmplDir());
+  for (const auto& entry : std::filesystem::directory_iterator(tmpl_dir)) {
+    GenTmpl(entry.path());
+  }
+}
 }  // namespace leetcodeapi

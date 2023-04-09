@@ -1,0 +1,24 @@
+{
+ "exampleTestcases": "[2,7,11,15]\n9\n[3,2,4]\n6\n[3,3]\n6",
+ "manual": false,
+ "name": "twoSum",
+ "params": [
+  {
+   "c_type": "std::vector<int>",
+   "name": "nums",
+   "type": "integer[]"
+  },
+  {
+   "c_type": "int",
+   "name": "target",
+   "type": "integer"
+  }
+ ],
+ "program_cname": "twosum",
+ "program_name": "two-sum",
+ "return": {
+  "c_type": "std::vector<int>",
+  "size": 2,
+  "type": "integer[]"
+ }
+}

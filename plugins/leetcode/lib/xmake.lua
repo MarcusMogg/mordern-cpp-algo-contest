@@ -1,9 +1,12 @@
-add_requires("argparse","fmt","nlohmann_json","libcurl")
+add_requires("argparse master","fmt","nlohmann_json master","libcurl")
+add_repositories("my-fork https://github.com/MarcusMogg/xmake-repo.git")
+add_requires("inja 3.4.0")
 
 target("leetcode-api")
     set_kind("binary")
     add_files("*.cc")
     add_packages("argparse","fmt","nlohmann_json","libcurl")
+    add_packages("inja")
     after_build(function (target)
         import("core.project.config")
         local targetfile = target:targetfile()

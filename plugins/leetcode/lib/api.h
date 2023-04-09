@@ -1,7 +1,10 @@
 #pragma once
 
 #include <filesystem>
+#include <map>
 #include <memory>
+#include <regex>
+#include <string>
 #include <string_view>
 #include <type_traits>
 #include <vector>
@@ -10,10 +13,30 @@
 
 namespace leetcodeapi {
 
-static constexpr int kFail = -1;
-static constexpr int kSuccess = 0;
+[[maybe_unused]] static constexpr int kFail = -1;
+[[maybe_unused]] static constexpr int kSuccess = 0;
 
 inline std::string_view GetResultMsg(int ret) { return ret == kSuccess ? "success" : "fail"; }
+
+inline std::string CTypeName(std::string_view input) {
+  std::string res;
+  std::regex_replace(back_inserter(res), input.begin(), input.end(), std::regex(R"([\s|-])"), "");
+  return res;
+}
+
+inline std::string_view LctypeToCtype(std::string_view lctype) {
+  // TODO(mogg): new type here
+  static const std::map<std::string_view, std::string_view> kConvertMap{
+      {"integer", "int"},
+      {"integer[]", "std::vector<int>"},
+  };
+
+  const auto it = kConvertMap.find(lctype);
+  if (it == kConvertMap.end()) {
+    return "Unknown";
+  }
+  return it->second;
+}
 
 class ICommand {
  public:
@@ -71,21 +94,30 @@ class GeneratorCommand final : public ICommand {
   void RealWork() override;
 
  private:
-  [[nodiscard]] std::string_view ProblemName() const;
+  [[nodiscard]] std::string ProblemName() const;
   [[nodiscard]] bool ForceUpdate() const;
-  [[nodiscard]] std::string_view BuildDir() const;
+  [[nodiscard]] std::string BuildDir() const;
+  [[nodiscard]] std::string TmplDir() const;
+
+  [[nodiscard]] std::filesystem::path GetOutputPath() const {
+    return std::filesystem::path(BuildDir()) / ProblemName();
+  }
 
   [[nodiscard]] std::filesystem::path GetMetaOutputPath() const {
-    return std::filesystem::path(BuildDir()) / ProblemName() / "meta.json";
+    return GetOutputPath() / "meta.json";
   }
 
   [[nodiscard]] bool CheckMetaExist() const { return std::filesystem::exists(GetMetaOutputPath()); }
 
   int GetMeta();
+  void MakeOutputDir() const;
+  void GenTmpl() const;
+  void GenTmpl(const std::filesystem::path& file_name) const;
 
   static constexpr std::string_view kProblemName = "problem-name";
   static constexpr std::string_view kFroceName = "--force";
   static constexpr std::string_view kBuildName = "--build-dir";
+  static constexpr std::string_view kTemplateName = "--tmpl-dir";
 
   static size_t CallBack(void* contents, size_t size, size_t nmemb, void* userp) {
     (static_cast<std::string*>(userp))->append(static_cast<char*>(contents), size * nmemb);

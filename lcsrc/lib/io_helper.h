@@ -1,7 +1,10 @@
 #pragma once
 
+#include <filesystem>
 #include <iostream>
 #include <vector>
+
+namespace leetcode::lib {
 
 template <class T>
 std::ostream& operator<<(std::ostream& out, const std::vector<T>& v) {
@@ -37,3 +40,6 @@ void print(const std::tuple<Args...>& t) {
   TuplePrinter<decltype(t), sizeof...(Args)>::print(t);
   std::cout << ")\n";
 }
+
+std::string ReadFile(const std::filesystem::path& path);
+}  // namespace leetcode::lib

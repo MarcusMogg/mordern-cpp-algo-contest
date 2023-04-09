@@ -33,6 +33,13 @@ function GetProgram(target_name, lazy_build)
     return program
 end
 
+function GetTargetDir(name) 
+    return path.join(os.projectdir(),"lcsrc");
+end 
+
+function GetTmplDir() 
+    return path.join(os.scriptdir(),"template");
+end 
 
 function main()
     local name = option.get("target")
@@ -41,9 +48,17 @@ function main()
     end
 
     local gen = option.get("generate") or false
+    local force = option.get("force") or false
+    local ouput_dir = GetTargetDir(name)
+    local tmpl_dir = GetTmplDir()
 
     if gen then
         local api = GetProgram("leetcode-api",false)
-        os.execv(api, {"generate", format("--build-dir=%s", config.buildir()), name})
+        os.execv(api, {
+            "generate", 
+            format("--build-dir=%s", ouput_dir), 
+            format("--tmpl-dir=%s", tmpl_dir),
+            name,
+            force and "--force" or ""})
     end
 end

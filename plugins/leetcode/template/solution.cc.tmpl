@@ -1,0 +1,19 @@
+#include "solution.h"
+
+namespace leetcode::{{ program_cname }} {
+{{ return.c_type }} Solve(
+{% for p in params %}   const {{ p.c_type }}& {{p.name}} {% if not loop.is_last %},
+{% endif %}{% endfor %}) {
+  // TODO(): your solution here
+  return {};
+}
+
+namespace standard {
+{{ return.c_type }} Solve(
+{% for p in params %}    const {{ p.c_type }}& /*unused*/ {% if not loop.is_last %},
+{% endif %}{% endfor %}) {
+  // TODO(): official answer here
+  return {};
+}
+}  // namespace standard
+}  // namespace leetcode::{{ program_cname }}
