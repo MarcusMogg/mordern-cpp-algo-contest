@@ -34,7 +34,9 @@ GeneratorCommand::GeneratorCommand() : ICommand("generate") {
   GetParser()
       .add_argument(kFroceName)
       .help("force update all generator output")
-      .default_value(false);
+      .default_value(false)
+      .implicit_value(true)
+      .nargs(0);
   GetParser()
       .add_argument(kBuildName)
       .help("generator output directory path(don't need absolute)")

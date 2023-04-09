@@ -9,6 +9,7 @@ task("lc")
         options = {
             {'f', "force", "k", false, "force update output"},
             {'g', "generate", "k", false, "generate template from leetcode"},
+            {'r', "run", "k", false, "run program"},
             {},
             {nil, "target", "v", nil, "problem name copy from leetcode problem url"},
         },

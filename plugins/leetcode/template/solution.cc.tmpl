@@ -10,7 +10,7 @@ namespace leetcode::{{ program_cname }} {
 
 namespace standard {
 {{ return.c_type }} Solve(
-{% for p in params %}    const {{ p.c_type }}& /*unused*/ {% if not loop.is_last %},
+{% for p in params %}   const {{ p.c_type }}& /*unused*/ {% if not loop.is_last %},
 {% endif %}{% endfor %}) {
   // TODO(): official answer here
   return {};

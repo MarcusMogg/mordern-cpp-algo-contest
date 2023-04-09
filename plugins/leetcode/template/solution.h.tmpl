@@ -3,10 +3,10 @@
 #include <vector>
 
 namespace leetcode::{{ program_cname }} {
-std::vector<int> Solve(const std::vector<int>&, int);
+{{ return.c_type }} Solve({% for p in params %}const {{ p.c_type }}& /*unused*/ {% if not loop.is_last %},{% endif %}{% endfor %});
 
 namespace standard {
-std::vector<int> Solve(const std::vector<int>&, int);
+{{ return.c_type }} Solve({% for p in params %}const {{ p.c_type }}& /*unused*/ {% if not loop.is_last %},{% endif %}{% endfor %});
 }  // namespace standard
 
 }  // namespace leetcode::{{ program_cname }}

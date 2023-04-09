@@ -18,16 +18,15 @@ function GetProgram(target_name, lazy_build)
         print(format("can't find program %s",target_name))
     end 
     project.lock()
-    task.run("build", {target = "leetcode-api", all = false})
+    task.run("build", {target = target_name, all = false})
+    project.unlock()
+
     local program = detect.find_program(target_name,{
         pathes = { 
             config.buildir()
         }})
-    project.unlock()
-
-    
     if program == nil then
-        raise(format("can't build & find %s", program_name))
+        raise(format("can't build & find %s", target_name))
     end
     
     return program
@@ -41,6 +40,13 @@ function GetTmplDir()
     return path.join(os.scriptdir(),"template");
 end 
 
+function GetForce(force) 
+    if force then
+        return "--force"
+    end
+    return ""
+end
+
 function main()
     local name = option.get("target")
     if name == nil then
@@ -53,12 +59,22 @@ function main()
     local tmpl_dir = GetTmplDir()
 
     if gen then
-        local api = GetProgram("leetcode-api",false)
+        local api = GetProgram("leetcode-api",not force)
+        print(force)
         os.execv(api, {
             "generate", 
             format("--build-dir=%s", ouput_dir), 
             format("--tmpl-dir=%s", tmpl_dir),
             name,
-            force and "--force" or ""})
+            GetForce(force)})
+    end
+
+    local run = option.get("run") or false
+
+    if run then
+        local api = GetProgram(name, false)
+        os.execv(api, {
+            path.join(GetTargetDir(),name,"simple_test_cases")
+        })
     end
 end
