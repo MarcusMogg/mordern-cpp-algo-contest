@@ -1,5 +1,4 @@
 add_requires("argparse master","fmt","nlohmann_json master","libcurl")
-add_repositories("my-fork https://github.com/MarcusMogg/xmake-repo.git")
 add_requires("inja 3.4.0")
 
 target("leetcode-api")
