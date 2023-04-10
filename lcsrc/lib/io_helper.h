@@ -8,11 +8,12 @@ namespace leetcode::lib {
 
 template <class T>
 std::ostream& operator<<(std::ostream& out, const std::vector<T>& v) {
+  out << '[';
   if (!v.empty()) {
-    out << '[';
     std::ranges::copy(v, std::ostream_iterator<T>(out, ", "));
-    out << "\b\b]";  // use two ANSI backspace characters '\b' to overwrite final ", "
+    out << "\b\b";  // use two ANSI backspace characters '\b' to overwrite final ", "
   }
+  out << "]";
   return out;
 }
 
