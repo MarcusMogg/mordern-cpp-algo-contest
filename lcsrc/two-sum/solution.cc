@@ -1,7 +1,11 @@
 #include "solution.h"
 
+#include <vcruntime.h>
+
 #include <algorithm>
+#include <map>
 #include <ranges>
+#include <utility>
 #include <vector>
 
 #include "lcsrc/lib/stlplus.h"
@@ -48,36 +52,20 @@ std::vector<int> Solve2(const std::vector<int>& nums, const int& target) {
 
 // n*logn
 std::vector<int> Solve3(const std::vector<int>& nums, const int& target) {
-  const auto find_target = [&nums, target](auto&& cur) {
-    return std::vector{
-        static_cast<int>(cur - nums.begin()),
-        static_cast<int>(std::upper_bound(cur + 1, nums.end(), target - *cur) - nums.begin()) - 1,
-    };
+  auto index_map = std::map<int, int>{};
+  const auto check_and_cache = [&index_map, target, &nums](auto&& cur) {
+    if (index_map.contains(target - *cur)) {
+      return true;
+    }
+    index_map[*cur] = static_cast<int>(cur - nums.begin());
+    return false;
   };
-  const auto check_second = [&nums, target](auto&& p) {
-    return p[1] < nums.size() && nums[p[0]] + nums[p[1]] == target;
-  };
-  return iota(nums.begin(), nums.end())  //
-         | transform(find_target)        //
-         | filter(check_second)          //
-         | take(1)                       //
-         | join                          //
-         | to<std::vector<int>>();       // c++23
-}
-// n
-std::vector<int> Solve4(const std::vector<int>& nums, const int& target) {
-  const auto find_target = [&nums, target](auto&& cur) {
-    return std::vector{
-        static_cast<int>(cur - nums.begin()),
-        static_cast<int>(std::upper_bound(cur + 1, nums.end(), target - *cur) - nums.begin()) - 1,
-    };
-  };
-  const auto check_second = [&nums, target](auto&& p) {
-    return p[1] < nums.size() && nums[p[0]] + nums[p[1]] == target;
+  const auto trans = [&index_map, target, &nums](auto&& cur) {
+    return std::vector{index_map[target - *cur], static_cast<int>(cur - nums.begin())};
   };
   return iota(nums.begin(), nums.end())  //
-         | transform(find_target)        //
-         | filter(check_second)          //
+         | filter(check_and_cache)       //
+         | transform(trans)              //
          | take(1)                       //
          | join                          //
          | to<std::vector<int>>();       // c++23
