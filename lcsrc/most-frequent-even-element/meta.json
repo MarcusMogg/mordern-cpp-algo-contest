@@ -1,0 +1,18 @@
+{
+ "exampleTestcases": "[0,1,2,2,4,4,1]\n[4,4,4,9,2,4]\n[29,47,21,41,13,37,25,7]",
+ "name": "mostFrequentEven",
+ "params": [
+  {
+   "c_type": "std::vector<int>",
+   "name": "nums",
+   "parser_type": "VectorParser<IntParser>",
+   "type": "integer[]"
+  }
+ ],
+ "program_cname": "mostfrequentevenelement",
+ "program_name": "most-frequent-even-element",
+ "return": {
+  "c_type": "int",
+  "type": "integer"
+ }
+}

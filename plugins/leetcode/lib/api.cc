@@ -105,6 +105,7 @@ int GeneratorCommand::GetMeta() {
 
     for (auto& i : meta["params"]) {
       i["c_type"] = LctypeToCtype(i["type"]);
+      i["parser_type"] = LcParseType(i["type"]);
     }
     meta["return"]["c_type"] = LctypeToCtype(meta["return"]["type"]);
 

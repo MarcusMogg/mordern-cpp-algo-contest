@@ -38,6 +38,20 @@ inline std::string_view LctypeToCtype(std::string_view lctype) {
   return it->second;
 }
 
+inline std::string_view LcParseType(std::string_view lctype) {
+  // TODO(mogg): new type here
+  static const std::map<std::string_view, std::string_view> kConvertMap{
+      {"integer", "IntParser"},
+      {"integer[]", "VectorParser<IntParser>"},
+  };
+
+  const auto it = kConvertMap.find(lctype);
+  if (it == kConvertMap.end()) {
+    return "Unknown";
+  }
+  return it->second;
+}
+
 class ICommand {
  public:
   explicit ICommand(std::string_view name);
