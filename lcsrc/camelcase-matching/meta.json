@@ -1,0 +1,25 @@
+{
+ "exampleTestcases": "[\"FooBar\",\"FooBarTest\",\"FootBall\",\"FrameBuffer\",\"ForceFeedBack\"]\n\"FB\"\n[\"FooBar\",\"FooBarTest\",\"FootBall\",\"FrameBuffer\",\"ForceFeedBack\"]\n\"FoBa\"\n[\"FooBar\",\"FooBarTest\",\"FootBall\",\"FrameBuffer\",\"ForceFeedBack\"]\n\"FoBaT\"",
+ "manual": false,
+ "name": "camelMatch",
+ "params": [
+  {
+   "c_type": "Unknown",
+   "name": "queries",
+   "parser_type": "Unknown",
+   "type": "string[]"
+  },
+  {
+   "c_type": "Unknown",
+   "name": "pattern",
+   "parser_type": "Unknown",
+   "type": "string"
+  }
+ ],
+ "program_cname": "camelcasematching",
+ "program_name": "camelcase-matching",
+ "return": {
+  "c_type": "Unknown",
+  "type": "list<boolean>"
+ }
+}
