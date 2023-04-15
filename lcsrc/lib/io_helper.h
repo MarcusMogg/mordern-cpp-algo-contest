@@ -1,6 +1,7 @@
 #pragma once
 
 #include <filesystem>
+#include <functional>
 #include <iostream>
 #include <vector>
 
@@ -10,7 +11,9 @@ template <class T>
 std::ostream& operator<<(std::ostream& out, const std::vector<T>& v) {
   out << '[';
   if (!v.empty()) {
-    std::ranges::copy(v, std::ostream_iterator<T>(out, ", "));
+    for (const auto& i : v) {
+      out << i << ", ";
+    }
     out << "\b\b";  // use two ANSI backspace characters '\b' to overwrite final ", "
   }
   out << "]";

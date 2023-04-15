@@ -29,9 +29,12 @@ inline std::string_view LctypeToCtype(std::string_view lctype) {
   static const std::map<std::string_view, std::string_view> kConvertMap{
       {"integer", "int"},
       {"integer[]", "std::vector<int>"},
+      {"integer[][]", "std::vector<std::vector<int>>"},
       {"string", "std::string"},
       {"string[]", "std::vector<std::string>"},
+      {"string[][]", "std::vector<std::vector<std::string>>"},
       {"list<boolean>", "std::vector<bool>"},
+
   };
 
   const auto it = kConvertMap.find(lctype);
@@ -46,8 +49,10 @@ inline std::string_view LcParseType(std::string_view lctype) {
   static const std::map<std::string_view, std::string_view> kConvertMap{
       {"integer", "IntParser"},
       {"integer[]", "VectorParser<IntParser>"},
+      {"integer[][]", "VectorParser<VectorParser<IntParser>>"},
       {"string", "StringParser"},
       {"string[]", "VectorParser<StringParser>"},
+      {"string[][]", "VectorParser<VectorParser<StringParser>>"},
       {"list<boolean>", "VectorParser<BoolParser>"},
   };
 
