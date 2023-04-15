@@ -4,22 +4,22 @@
  "name": "camelMatch",
  "params": [
   {
-   "c_type": "Unknown",
+   "c_type": "std::vector<std::string>",
    "name": "queries",
-   "parser_type": "Unknown",
+   "parser_type": "VectorParser<StringParser>",
    "type": "string[]"
   },
   {
-   "c_type": "Unknown",
+   "c_type": "std::string",
    "name": "pattern",
-   "parser_type": "Unknown",
+   "parser_type": "StringParser",
    "type": "string"
   }
  ],
  "program_cname": "camelcasematching",
  "program_name": "camelcase-matching",
  "return": {
-  "c_type": "Unknown",
+  "c_type": "std::vector<bool>",
   "type": "list<boolean>"
  }
 }

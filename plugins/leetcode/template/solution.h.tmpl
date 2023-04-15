@@ -1,6 +1,6 @@
 #pragma once
 
-#include <vector>
+#include "lcsrc/lib/stlplus.h"
 
 namespace leetcode::{{ program_cname }} {
 {{ return.c_type }} Solve({% for p in params %}const {{ p.c_type }}& /*unused*/ {% if not loop.is_last %},{% endif %}{% endfor %});

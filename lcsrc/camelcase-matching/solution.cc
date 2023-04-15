@@ -1,7 +1,5 @@
 #include "solution.h"
 
-#include <ctype.h>
-
 #include <algorithm>
 #include <cctype>
 #include <ranges>
@@ -30,8 +28,8 @@ bool CheckMatch(std::string_view q, std::string_view pattern) {
 }
 
 std::vector<bool> Solve(const std::vector<std::string>& queries, const std::string& pattern) {
-  return queries                                                                         //
-         | transform([&pattern](std::string_view q) { return CheckMatch(q, pattern); })  //
+  return queries                                                                                  //
+         | views::transform([&pattern](const std::string& q) { return CheckMatch(q, pattern); })  //
          | to<std::vector<bool>>();
 }
 

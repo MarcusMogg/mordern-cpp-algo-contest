@@ -36,6 +36,13 @@ SimpleGenerator<Token> NextToken(std::string_view data) {
             t.type = Token::TokenType::kNull;
             t.raw_data = std::string_view(data.data() + i, 1);
             break;
+          case 't':
+          case 'T':
+          case 'f':
+          case 'F':
+            t.type = Token::TokenType::kBool;
+            t.raw_data = std::string_view(data.data() + i, 1);
+            break;
           default:
             throw ParseError(std::format("inlegal char {} in kNone", data[i]));
         }
@@ -76,9 +83,24 @@ SimpleGenerator<Token> NextToken(std::string_view data) {
           t.raw_data = std::string_view(t.raw_data.data(), t.raw_data.size() + 2);
         } else if (data[i] == '\"') {
           t.raw_data = t.raw_data.substr(1);  // skip first "
+          co_yield t;
+          t.type = Token::TokenType::kNone;
         } else {
           t.raw_data = std::string_view(t.raw_data.data(), t.raw_data.size() + 1);
         }
+        break;
+      case Token::TokenType::kBool:
+        if (std::isalpha(data[i]) != 0) {
+          t.raw_data = std::string_view(t.raw_data.data(), t.raw_data.size() + 1);
+          break;
+        }
+        if (std::isspace(data[i]) != 0 || Among(data[i], ']', ',')) {
+          co_yield t;
+          t.type = Token::TokenType::kNone;
+          i--;
+          break;
+        }
+        throw ParseError(std::format("inlegal char {} in kBool", data[i]));
       case Token::TokenType::kSquareBracketsLeft:
       case Token::TokenType::kSquareBracketsRight:
       case Token::TokenType::kComma:

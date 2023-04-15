@@ -1,8 +1,15 @@
 // for some stl in c++23
 #pragma once
 
+#include <algorithm>
 #include <iterator>
+#include <list>
+#include <map>
 #include <ranges>
+#include <set>
+#include <string>
+#include <vector>
+
 
 namespace leetcode::lib {
 

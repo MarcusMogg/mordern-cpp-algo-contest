@@ -1,9 +1,13 @@
 #pragma once
 
+#include <algorithm>
+#include <cctype>
 #include <concepts>
 #include <cstddef>
+#include <format>
 #include <functional>
 #include <iostream>
+#include <iterator>
 #include <span>
 #include <stdexcept>
 #include <string>
@@ -98,6 +102,44 @@ struct VectorParser {
       }
       test_cases++;
       token = *test_cases;
+    }
+    test_cases++;
+    return res;
+  }
+};
+
+struct StringParser {
+  using DataType = std::string;
+
+  [[nodiscard]] static DataType Parse(InputType test_cases) {
+    const auto& token = *test_cases;
+    if (token.type != Token::TokenType::kString) {
+      throw ParseError("expected kString");
+    }
+    auto res = std::string(token.raw_data);
+    test_cases++;
+    return res;
+  }
+};
+
+struct BoolParser {
+  using DataType = bool;
+
+  [[nodiscard]] static DataType Parse(InputType test_cases) {
+    const auto& token = *test_cases;
+    if (token.type != Token::TokenType::kBool) {
+      throw ParseError("expected kString");
+    }
+    std::string lower;
+    std::transform(
+        token.raw_data.begin(), token.raw_data.end(), std::back_inserter(lower), ::tolower);
+    bool res;
+    if (lower == "true") {
+      res = true;
+    } else if (lower == "false") {
+      res = false;
+    } else {
+      throw ParseError(std::format("unexpected string {}", lower));
     }
     test_cases++;
     return res;

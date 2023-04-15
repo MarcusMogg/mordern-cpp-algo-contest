@@ -95,6 +95,7 @@ struct Token {
     kSquareBracketsRight = 5,
     kComma = 6,
     kEof = 7,
+    kBool = 8,
   };
 
   TokenType type;
