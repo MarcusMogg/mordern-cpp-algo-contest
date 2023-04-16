@@ -1,6 +1,7 @@
 #include "solution.h"
 
 namespace leetcode::{{ program_cname }} {
+{% if not systemdesign %}
 {{ return.c_type }} Solve(
 {% for p in params %}   const {{ p.c_type }}& {{p.name}} {% if not loop.is_last %},
 {% endif %}{% endfor %}) {
@@ -16,4 +17,13 @@ namespace standard {
   return {};
 }
 }  // namespace standard
+{% else %}
+{{classname}}::{{classname}}({% for p in constructor.params %}const {{ p.c_type }}& {{p.name}} {% if not loop.is_last %}, {% endif %}{% endfor %}) {}
+
+{% for m in methods %}
+{{m.return.c_type}} {{classname}}::{{m.name}}({% for p in m.params %}const {{ p.c_type }}& {{p.name}} {% if not loop.is_last %},{% endif %}{% endfor %}){
+  return {};
+}{% endfor %}
+
+{% endif %}
 }  // namespace leetcode::{{ program_cname }}

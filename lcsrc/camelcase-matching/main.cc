@@ -4,14 +4,15 @@
 #include "solution.h"
 
 using namespace leetcode::lib;
+using namespace leetcode::camelcasematching;
 
 int main(int /*argc*/, const char** argv) {
   auto test_cases = ReadFile(argv[1]);
-
-  TestCase<VectorParser<StringParser>,StringParser> parse;
-
   auto next_token = NextToken(test_cases);
   auto it = next_token.begin();
+
+  TestCase<EmptyParser, VectorParser<StringParser>, StringParser> parse;
+
   try {
     while (it != next_token.end()) {
       const auto input = parse.Parse(it);

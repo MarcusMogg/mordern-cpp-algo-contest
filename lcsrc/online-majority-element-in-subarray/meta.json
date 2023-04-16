@@ -1,0 +1,49 @@
+{
+ "classname": "MajorityChecker",
+ "constructor": {
+  "params": [
+   {
+    "c_type": "std::vector<int>",
+    "name": "arr",
+    "parser_type": "VectorParser<IntParser>",
+    "type": "integer[]"
+   }
+  ]
+ },
+ "exampleTestcases": "[\"MajorityChecker\",\"query\",\"query\",\"query\"]\n[[[1,1,2,2,1,1]],[0,5,4],[0,3,3],[2,3,2]]",
+ "methods": [
+  {
+   "name": "query",
+   "params": [
+    {
+     "c_type": "int",
+     "name": "left",
+     "parser_type": "IntParser",
+     "type": "integer"
+    },
+    {
+     "c_type": "int",
+     "name": "right",
+     "parser_type": "IntParser",
+     "type": "integer"
+    },
+    {
+     "c_type": "int",
+     "name": "threshold",
+     "parser_type": "IntParser",
+     "type": "integer"
+    }
+   ],
+   "return": {
+    "c_type": "bool",
+    "type": "integer"
+   }
+  }
+ ],
+ "program_cname": "onlinemajorityelementinsubarray",
+ "program_name": "online-majority-element-in-subarray",
+ "return": {
+  "type": "boolean"
+ },
+ "systemdesign": true
+}

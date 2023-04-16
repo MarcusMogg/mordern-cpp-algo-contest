@@ -63,9 +63,76 @@ void GeneratorCommand::RealWork() {
 }
 
 int GeneratorCommand::GetMeta() {
+  const auto resp = CurlLeetcode();
+  if (resp.empty()) {
+    return kFail;
+  }
+
+  try {
+    const auto response = nlohmann::json::parse(resp);
+    auto meta = nlohmann::json::parse(response["data"]["question"]["metaData"].get<std::string>());
+    meta["exampleTestcases"] = response["data"]["question"]["exampleTestcases"];
+    ConvertMetaJson(meta);
+    const auto meta_path = GetMetaOutputPath();
+    std::filesystem::create_directory(meta_path.parent_path());
+    std::ofstream meta_out(meta_path);
+    meta_out << meta.dump(1);
+    meta_out.close();
+  } catch (const std::exception& e) {
+    std::cout << std::format(
+        "parse leetcode response failed | response {} | error {}\n", resp, e.what());
+    return kFail;
+  }
+  return kSuccess;
+}
+
+void GeneratorCommand::MakeOutputDir() const {
+  const auto out_dir = GetOutputPath();
+  if (std::filesystem::exists(out_dir)) {
+    return;
+  }
+  std::cout << std::format("create dir {} \n", out_dir.string());
+  std::filesystem::create_directories(out_dir);
+}
+
+void GeneratorCommand::GenTmpl() const {
+  const auto tmpl_dir = std::filesystem::path(TmplDir());
+  for (const auto& entry : std::filesystem::directory_iterator(tmpl_dir)) {
+    GenTmpl(entry.path());
+  }
+}
+
+void GeneratorCommand::ConvertMetaJson(nlohmann::json& meta) {
+  meta["program_name"] = ProblemName();
+  meta["program_cname"] = CTypeName(ProblemName());
+
+  if (meta.contains("systemdesign") && meta["systemdesign"].get<bool>()) {
+    for (auto& i : meta["constructor"]["params"]) {
+      i["c_type"] = LctypeToCtype(i["type"]);
+      i["parser_type"] = LcParseType(i["type"]);
+    }
+    for (auto& methdod : meta["methods"]) {
+      for (auto& i : methdod["params"]) {
+        i["c_type"] = LctypeToCtype(i["type"]);
+        i["parser_type"] = LcParseType(i["type"]);
+      }
+      methdod["return"]["c_type"] = LctypeToCtype(meta["return"]["type"]);
+    }
+
+  } else {
+    meta["systemdesign"] = false;
+    for (auto& i : meta["params"]) {
+      i["c_type"] = LctypeToCtype(i["type"]);
+      i["parser_type"] = LcParseType(i["type"]);
+    }
+    meta["return"]["c_type"] = LctypeToCtype(meta["return"]["type"]);
+  }
+}
+
+std::string GeneratorCommand::CurlLeetcode() {
   auto* handle = curl_easy_init();
   if (handle == nullptr) {
-    return kFail;
+    return {};
   }
   [[maybe_unused]] std::shared_ptr<CURL> auto_clean(handle, curl_easy_cleanup);
   // well, maybe they use vernier calipers
@@ -93,48 +160,8 @@ int GeneratorCommand::GetMeta() {
   const auto res = curl_easy_perform(handle);  // perform the request
   if (res != CURLE_OK) {
     std::cout << std::format("curl_easy_perform() failed: {}\n", curl_easy_strerror(res));
-    return kFail;
+    return {};
   }
-
-  try {
-    const auto response = nlohmann::json::parse(read_buffer);
-    auto meta = nlohmann::json::parse(response["data"]["question"]["metaData"].get<std::string>());
-    meta["exampleTestcases"] = response["data"]["question"]["exampleTestcases"];
-    meta["program_name"] = ProblemName();
-    meta["program_cname"] = CTypeName(ProblemName());
-
-    for (auto& i : meta["params"]) {
-      i["c_type"] = LctypeToCtype(i["type"]);
-      i["parser_type"] = LcParseType(i["type"]);
-    }
-    meta["return"]["c_type"] = LctypeToCtype(meta["return"]["type"]);
-
-    const auto meta_path = GetMetaOutputPath();
-    std::filesystem::create_directory(meta_path.parent_path());
-    std::ofstream meta_out(meta_path);
-    meta_out << meta.dump(1);
-    meta_out.close();
-  } catch (const std::exception& e) {
-    std::cout << std::format(
-        "parse leetcode response failed | response {} | error {}\n", read_buffer, e.what());
-    return kFail;
-  }
-  return kSuccess;
-}
-
-void GeneratorCommand::MakeOutputDir() const {
-  const auto out_dir = GetOutputPath();
-  if (std::filesystem::exists(out_dir)) {
-    return;
-  }
-  std::cout << std::format("create dir {} \n", out_dir.string());
-  std::filesystem::create_directories(out_dir);
-}
-
-void GeneratorCommand::GenTmpl() const {
-  const auto tmpl_dir = std::filesystem::path(TmplDir());
-  for (const auto& entry : std::filesystem::directory_iterator(tmpl_dir)) {
-    GenTmpl(entry.path());
-  }
+  return read_buffer;
 }
 }  // namespace leetcodeapi

@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "argparse/argparse.hpp"
+#include "nlohmann/json_fwd.hpp"
 
 namespace leetcodeapi {
 
@@ -34,7 +35,7 @@ inline std::string_view LctypeToCtype(std::string_view lctype) {
       {"string[]", "std::vector<std::string>"},
       {"string[][]", "std::vector<std::vector<std::string>>"},
       {"list<boolean>", "std::vector<bool>"},
-
+      {"boolean", "bool"},
   };
 
   const auto it = kConvertMap.find(lctype);
@@ -54,6 +55,7 @@ inline std::string_view LcParseType(std::string_view lctype) {
       {"string[]", "VectorParser<StringParser>"},
       {"string[][]", "VectorParser<VectorParser<StringParser>>"},
       {"list<boolean>", "VectorParser<BoolParser>"},
+      {"boolean", "BoolParser"},
   };
 
   const auto it = kConvertMap.find(lctype);
@@ -148,5 +150,8 @@ class GeneratorCommand final : public ICommand {
     (static_cast<std::string*>(userp))->append(static_cast<char*>(contents), size * nmemb);
     return size * nmemb;
   };
+
+  [[nodiscard]] std::string CurlLeetcode();
+  void ConvertMetaJson(nlohmann::json& meta);
 };
 }  // namespace leetcodeapi

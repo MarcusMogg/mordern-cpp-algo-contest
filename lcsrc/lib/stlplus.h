@@ -5,11 +5,11 @@
 #include <iterator>
 #include <list>
 #include <map>
+#include <memory>
 #include <ranges>
 #include <set>
 #include <string>
 #include <vector>
-
 
 namespace leetcode::lib {
 

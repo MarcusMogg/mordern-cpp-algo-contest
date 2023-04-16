@@ -1,6 +1,7 @@
 #pragma once
 
 #include <algorithm>
+#include <array>
 #include <cctype>
 #include <concepts>
 #include <cstddef>
@@ -8,6 +9,7 @@
 #include <functional>
 #include <iostream>
 #include <iterator>
+#include <memory>
 #include <span>
 #include <stdexcept>
 #include <string>
@@ -34,7 +36,14 @@ concept CanParse = requires(std::remove_cvref_t<T> obj) {
   };
 };
 
-template <CanParse<InputType>... Parser>
+// do nothing
+struct EmptyParser {
+  using DataType = char;
+
+  static DataType Parse(InputType /* ignore */) { return ' '; }
+};
+
+template <CanParse<InputType> SplitParser, CanParse<InputType>... Parser>
 struct TestCase {
   using DataType = std::tuple<typename Parser::DataType...>;
 
@@ -46,6 +55,7 @@ struct TestCase {
     if constexpr (sizeof...(args) == 0) {
       return tmp;
     } else {
+      SplitParser{}.Parse(test_cases);
       return std::tuple_cat(tmp, ParseImpl(test_cases, std::forward<Args>(args)...));
     }
   }
@@ -65,7 +75,7 @@ struct IntParser {
   [[nodiscard]] static DataType Parse(InputType test_cases) {
     const auto& token = *test_cases;
     if (token.type != Token::TokenType::kInteger) {
-      throw ParseError("expected kInteger");
+      throw ParseError(std::format("expected kInteger | real {}", token.raw_data));
     }
     int res = std::stoi(std::string(token.raw_data));
     test_cases++;
@@ -143,6 +153,91 @@ struct BoolParser {
     }
     test_cases++;
     return res;
+  }
+};
+
+struct CommaParser {
+  using DataType = char;
+
+  static DataType Parse(InputType test_cases) {
+    auto& token = *test_cases;
+    if (token.type != Token::TokenType::kComma) {
+      throw ParseError("expected kComma in VectorParser");
+    }
+    test_cases++;
+    return ',';
+  }
+};
+
+template <size_t N>
+struct StringLiteral {
+  // NOLINTNEXTLINE (cppcoreguidelines-avoid-c-arrays)
+  constexpr StringLiteral(const char (&str)[N]) { std::copy_n(str, N, value.begin()); }
+  std::array<char, N> value;
+
+  [[nodiscard]] constexpr size_t size() const noexcept { return value.size(); }
+};
+
+template <StringLiteral Key, class Value>
+struct ComplieTimePair {
+  using type = Value;
+
+  static ComplieTimePair GetPair(
+      std::integral_constant<StringLiteral<Key.size()>, Key> /* unused */) {
+    return {};
+  }
+};
+
+template <typename... Pairs>
+struct ComplieTimeMap : public Pairs... {
+  using Pairs::GetPair...;
+
+  template <StringLiteral Key>
+  using find_type =
+      typename decltype(GetPair(std::integral_constant<StringLiteral<Key.size()>, Key>{}))::type;
+};
+
+template <class Cm>
+struct DynamicTestCase {
+  using DataType = std::vector<std::string>;
+
+  static DataType Parse(InputType test_cases) {
+    // first line
+    auto res = VectorParser<StringParser>::Parse(test_cases);
+    auto& token = *test_cases;
+    if (token.type != Token::TokenType::kSquareBracketsLeft) {
+      throw ParseError("expected kSquareBracketsLeft in Second line");
+    }
+    test_cases++;
+    return res;
+  }
+
+  template <StringLiteral Key, class Func>
+  static void Run(InputType test_cases, Func&& f) {
+    using Parser = typename Cm::template find_type<Key>;
+    static_assert(CanParse<Parser, InputType>, "Can't parse before run");
+
+    // begin with [
+    auto& token = *test_cases;
+    if (token.type != Token::TokenType::kSquareBracketsLeft) {
+      throw ParseError("expected kSquareBracketsLeft");
+    }
+    test_cases++;
+    std::invoke(f, Parser{}.Parse(test_cases));
+
+    token = *test_cases;
+    // end with ]
+    if (token.type != Token::TokenType::kSquareBracketsRight) {
+      throw ParseError(std::format("expected kSquareBracketsRight | real {}", token.raw_data));
+    }
+    test_cases++;
+    token = *test_cases;
+
+    // , or ] after each case
+    if (!Among(token.type, Token::TokenType::kComma, Token::TokenType::kSquareBracketsRight)) {
+      throw ParseError("expected kComma or kSquareBracketsRight after parse");
+    }
+    test_cases++;
   }
 };
 

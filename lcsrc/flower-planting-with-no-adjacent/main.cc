@@ -8,7 +8,7 @@ using namespace leetcode::lib;
 int main(int /*argc*/, const char** argv) {
   auto test_cases = ReadFile(argv[1]);
 
-  TestCase<IntParser,VectorParser<VectorParser<IntParser>>> parse;
+  TestCase<EmptyParser, IntParser, VectorParser<VectorParser<IntParser>>> parse;
 
   auto next_token = NextToken(test_cases);
   auto it = next_token.begin();
@@ -19,7 +19,8 @@ int main(int /*argc*/, const char** argv) {
       print(input);
 
       std::cout << "expected:\n";
-      std::cout << std::apply(leetcode::flowerplantingwithnoadjacent::standard::Solve, input) << "\n";
+      std::cout << std::apply(leetcode::flowerplantingwithnoadjacent::standard::Solve, input)
+                << "\n";
 
       std::cout << "ouput:\n";
       std::cout << std::apply(leetcode::flowerplantingwithnoadjacent::Solve, input) << "\n";

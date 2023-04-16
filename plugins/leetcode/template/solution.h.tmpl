@@ -2,11 +2,22 @@
 
 #include "lcsrc/lib/stlplus.h"
 
-namespace leetcode::{{ program_cname }} {
-{{ return.c_type }} Solve({% for p in params %}const {{ p.c_type }}& /*unused*/ {% if not loop.is_last %},{% endif %}{% endfor %});
+namespace leetcode::{{program_cname}} {
+{% if not systemdesign %}
+{{ return.c_type }} Solve({% for p in params %}const {{ p.c_type }}& /*unused*/ {% if not loop.is_last %}, {% endif %}{% endfor %});
 
 namespace standard {
-{{ return.c_type }} Solve({% for p in params %}const {{ p.c_type }}& /*unused*/ {% if not loop.is_last %},{% endif %}{% endfor %});
+{{ return.c_type }} Solve({% for p in params %}const {{ p.c_type }}& /*unused*/ {% if not loop.is_last %}, {% endif %}{% endfor %});
 }  // namespace standard
+{% else %}
+class {{classname}} {
+public:
+  explicit {{classname}}({% for p in constructor.params %}const {{ p.c_type }}& {{p.name}} {% if not loop.is_last %}, {% endif %}{% endfor %});
 
+  {% for m in methods %}{{m.return.c_type}} {{m.name}}({% for p in m.params %}const {{ p.c_type }}& {{p.name}} {% if not loop.is_last %},{% endif %}{% endfor %});{% endfor %}
+
+  static std::shared_ptr<{{classname}}> Build({% for p in constructor.params %}const {{ p.c_type }}& {{p.name}} {% if not loop.is_last %}, {% endif %}{% endfor %}) {
+    return std::make_shared<{{classname}}>({% for p in constructor.params %}{{p.name}} {% if not loop.is_last %}, {% endif %}{% endfor %});
+  }
+};{% endif %}
 }  // namespace leetcode::{{ program_cname }}

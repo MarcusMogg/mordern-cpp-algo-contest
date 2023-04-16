@@ -4,16 +4,26 @@
 #include "solution.h"
 
 using namespace leetcode::lib;
+using namespace leetcode::{{program_cname}};
 
 int main(int /*argc*/, const char** argv) {
   auto test_cases = ReadFile(argv[1]);
-
-  TestCase<{% for p in params %}{{ p.parser_type }}{% if not loop.is_last %},{% endif %}{% endfor %}> parse;
-
   auto next_token = NextToken(test_cases);
   auto it = next_token.begin();
+{% if not systemdesign %}
+  TestCase<EmptyParser, {% for p in params %}{{ p.parser_type }}{% if not loop.is_last %},{% endif %}{% endfor %}> parse;
+{% else %}
+  // for constructor
+  using {{classname}}Parser = TestCase<CommaParser, {% for p in constructor.params %}{{ p.parser_type }}{% if not loop.is_last %}, {% endif %}{% endfor %}>;
+  {% for m in methods %}using {{m.name}}Parser = TestCase<CommaParser, {% for p in m.params %}{{ p.parser_type }}{% if not loop.is_last %}, {% endif %}{% endfor %}{% endfor %}>;
+
+  using Parser = DynamicTestCase<ComplieTimeMap<
+      {% for m in methods %}ComplieTimePair<"{{m.name}}", {{m.name}}Parser>,
+      {% endfor %}ComplieTimePair<"{{classname}}", {{classname}}Parser>>>;
+{% endif %}
   try {
     while (it != next_token.end()) {
+{% if not systemdesign %}
       const auto input = parse.Parse(it);
       std::cout << "input:\n";
       print(input);
@@ -23,6 +33,27 @@ int main(int /*argc*/, const char** argv) {
 
       std::cout << "ouput:\n";
       std::cout << std::apply(leetcode::{{ program_cname }}::Solve, input) << "\n";
+{% else %}
+      const auto input = Parser::Parse(it);
+      std::shared_ptr<{{classname}}> solution;
+
+      for (const auto& i : input) {
+        if (i == "{{classname}}") {
+          Parser::Run<"{{classname}}">(it, [&solution]({{classname}}Parser::DataType&& input) {
+            solution = std::apply({{classname}}::Build, input);
+          });
+        }{% for m in methods %} else if (i == "{{m.name}}") {
+          Parser::Run<"{{m.name}}">(it, [&solution]({{m.name}}Parser::DataType&& input) {
+            std::cout << "input:\n";
+            print(input);
+            std::cout << "ouput:\n";
+            auto res = std::apply(
+                &{{classname}}::{{m.name}}, std::tuple_cat(std::make_tuple(*solution), input));
+            std::cout << res << "\n";
+          });
+        }{% endfor %}
+      }
+{% endif %}
     }
   } catch (const std::exception& e) {
     std::cout << e.what();

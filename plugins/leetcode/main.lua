@@ -77,4 +77,5 @@ function main()
             path.join(GetTargetDir(),name,"simple_test_cases")
         })
     end
+    task.run("format")
 end

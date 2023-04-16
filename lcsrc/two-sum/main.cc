@@ -7,7 +7,7 @@ using namespace leetcode::lib;
 int main(int /*argc*/, const char** argv) {
   auto test_cases = ReadFile(argv[1]);
 
-  TestCase<VectorParser<IntParser>, IntParser> parse;
+  TestCase<EmptyParser, VectorParser<IntParser>, IntParser> parse;
 
   auto next_token = NextToken(test_cases);
   auto it = next_token.begin();
