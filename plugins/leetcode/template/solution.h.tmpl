@@ -4,10 +4,10 @@
 
 namespace leetcode::{{program_cname}} {
 {% if not systemdesign %}
-{{ return.c_type }} Solve({% for p in params %}const {{ p.c_type }}& /*unused*/ {% if not loop.is_last %}, {% endif %}{% endfor %});
+{{ return.c_type }} Solve({% for p in params %}const {{ p.c_type }}& {{p.name}} {% if not loop.is_last %}, {% endif %}{% endfor %});
 
 namespace standard {
-{{ return.c_type }} Solve({% for p in params %}const {{ p.c_type }}& /*unused*/ {% if not loop.is_last %}, {% endif %}{% endfor %});
+{{ return.c_type }} Solve({% for p in params %}const {{ p.c_type }}& {{p.name}} {% if not loop.is_last %}, {% endif %}{% endfor %});
 }  // namespace standard
 {% else %}
 class {{classname}} {
