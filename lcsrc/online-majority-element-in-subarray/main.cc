@@ -27,6 +27,8 @@ int main(int /*argc*/, const char** argv) {
       for (const auto& i : input) {
         if (i == "MajorityChecker") {
           Parser::Run<"MajorityChecker">(it, [&solution](MajorityCheckerParser::DataType&& input) {
+            std::cout << "input:\n";
+            print(input);
             solution = std::apply(MajorityChecker::Build, input);
           });
         } else if (i == "query") {
