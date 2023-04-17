@@ -1,11 +1,39 @@
 #pragma once
 
+#include <complex>
 #include <utility>
 #include <vector>
 
 #include "lcsrc/lib/stlplus.h"
 
 namespace leetcode::onlinemajorityelementinsubarray {
+
+struct Node {
+  int value{0};
+  int cnt{0};
+
+  Node& operator+=(const Node& right) {
+    if (right.value == value) {
+      cnt += right.cnt;
+    } else {
+      if (right.cnt > cnt) {
+        value = right.value;
+      }
+      cnt = std::abs(right.cnt - cnt);
+    }
+    return *this;
+  }
+
+  Node operator+(const Node& right) const {
+    Node res = *this;
+    res += right;
+    return res;
+  }
+
+  Node operator*(int /*right*/) const { return *this; }
+
+  bool operator==(const Node& right) const { return value == right.value && cnt == right.cnt; }
+};
 
 class MajorityChecker {
  public:
@@ -18,14 +46,9 @@ class MajorityChecker {
   }
 
   int QueryCnt(int val, int left, int right);
-  void BuildTree(const std::vector<int>& arr, int s, int t, int p);
-  std::pair<int, int> Query(int l, int r, int cl, int cr, int p);
 
-  static int Left(int p) { return p * 2; }
-  static int Right(int p) { return p * 2 + 1; }
-
-  std::vector<std::pair<int, int>> tree;
   std::map<int, std::vector<int>> index;
-  int end_;
+
+  SegTreeLazyRangeAdd<Node> tree_;
 };
 }  // namespace leetcode::onlinemajorityelementinsubarray

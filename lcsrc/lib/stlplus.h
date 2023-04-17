@@ -11,6 +11,8 @@
 #include <string>
 #include <vector>
 
+#include "segtree.h"
+
 namespace leetcode::lib {
 
 // https://en.cppreference.com/w/cpp/ranges/to

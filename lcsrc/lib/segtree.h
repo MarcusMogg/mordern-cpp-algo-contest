@@ -1,23 +1,36 @@
 #pragma once
 
+#include <concepts>
+#include <type_traits>
 #include <vector>
 
-template <typename T>
+template <class T>
+concept SegTreeNode = requires(T cur_right) {
+  requires std::is_default_constructible_v<T>;
+  requires std::is_copy_assignable_v<T>;
+  requires std::equality_comparable<T>;
+
+  requires requires(T another) { cur_right += another; };
+  requires requires(T another) { cur_right + another; };
+  requires requires() { cur_right * 2; };
+};
+
+template <SegTreeNode T>
 class SegTreeLazyRangeAdd {
  public:
   explicit SegTreeLazyRangeAdd<T>(const std::vector<T>& v)
-      : end_(v.size() - 1), tree_(v.size() * 4, 0), lazy_(v.size() * 4, 0) {
-    Build(0, end_, 1);
+      : end_(static_cast<int>(v.size()) - 1), tree_(v.size() * 4, T{}), lazy_(v.size() * 4, T{}) {
+    Build(v, 0, end_, kRoot);
   }
 
   // [l,r] close
-  T RangeSum(int l, int r) { return RangeSum(l, r, 0, end_ - 1, kRoot); }
+  T RangeSum(int l, int r) { return RangeSum(l, r, 0, end_, kRoot); }
 
   // [l,r] close
-  void RangeAdd(int l, int r, int val) { RangeAdd(l, r, val, 0, end_ - 1, kRoot); }
+  void RangeAdd(int l, int r, int val) { RangeAdd(l, r, val, 0, end_, kRoot); }
 
-  static int Left(int p) { return p * 2; }
-  static int Right(int p) { return p * 2 + 1; }
+  static int Left(int tree_id) { return tree_id * 2; }
+  static int Right(int tree_id) { return tree_id * 2 + 1; }
 
  private:
   int end_;
@@ -27,59 +40,59 @@ class SegTreeLazyRangeAdd {
   static constexpr int kRoot = 1;
 
   // update tree_ from lazy_ value
-  void Maintain(int cl, int cr, int p) {
-    int cm = cl + (cr - cl) / 2;
-    if (cl != cr && lazy_[p]) {
-      lazy_[Left(p)] += lazy_[p];
-      lazy_[Right(p)] += lazy_[p];
-      tree_[Left(p)] += lazy_[p] * (cm - cl + 1);
-      tree_[Right(p)] += lazy_[p] * (cr - cm);
-      lazy_[p] = 0;
+  void Maintain(int cur_left, int cur_right, int tree_id) {
+    int cm = cur_left + (cur_right - cur_left) / 2;
+    if (cur_left != cur_right && lazy_[tree_id] != T{}) {
+      lazy_[Left(tree_id)] += lazy_[tree_id];
+      lazy_[Right(tree_id)] += lazy_[tree_id];
+      tree_[Left(tree_id)] += lazy_[tree_id] * (cm - cur_left + 1);
+      tree_[Right(tree_id)] += lazy_[tree_id] * (cur_right - cm);
+      lazy_[tree_id] = T{};
     }
   }
 
-  T RangeSum(int l, int r, int cl, int cr, int p) {
-    if (l <= cl && cr <= r) {
-      return tree_[p];
+  T RangeSum(int l, int r, int cur_left, int cur_right, int tree_id) {
+    if (l <= cur_left && cur_right <= r) {
+      return tree_[tree_id];
     }
-    int m = cl + (cr - cl) / 2;
-    T sum = 0;
-    Maintain(cl, cr, p);
+    int m = cur_left + (cur_right - cur_left) / 2;
+    T sum{};
+    // Maintain(cur_left, cur_right, tree_id);
     if (l <= m) {
-      sum += RangeSum(l, r, cl, m, Left(p));
+      sum += RangeSum(l, r, cur_left, m, Left(tree_id));
     }
     if (r > m) {
-      sum += RangeSum(l, r, m + 1, cr, Right(p));
+      sum += RangeSum(l, r, m + 1, cur_right, Right(tree_id));
     }
     return sum;
   }
 
-  void RangeAdd(int l, int r, T val, int cl, int cr, int p) {
-    if (l <= cl && cr <= r) {
-      lazy_[p] += val;
-      tree_[p] += (cr - cl + 1) * val;
+  void RangeAdd(int l, int r, T val, int cur_left, int cur_right, int tree_id) {
+    if (l <= cur_left && cur_right <= r) {
+      lazy_[tree_id] += val;
+      tree_[tree_id] += (cur_right - cur_left + 1) * val;
       return;
     }
-    int m = cl + (cr - cl) / 2;
-    Maintain(cl, cr, p);
+    int m = cur_left + (cur_right - cur_left) / 2;
+    Maintain(cur_left, cur_right, tree_id);
     if (l <= m) {
-      RangeAdd(l, r, val, cl, m, Left(p));
+      RangeAdd(l, r, val, cur_left, m, Left(tree_id));
     }
     if (r > m) {
-      RangeAdd(l, r, val, m + 1, cr, Right(p));
+      RangeAdd(l, r, val, m + 1, cur_right, Right(tree_id));
     }
-    tree_[p] = tree_[Left(p)] + tree_[Right(p)];
+    tree_[tree_id] = tree_[Left(tree_id)] + tree_[Right(tree_id)];
   }
 
-  // arr[s:t) , tree node p
-  void Build(const std::vector<T>& arr, int s, int t, int p) {
-    if (s == t) {
-      tree_[p] = arr[s];
+  // arr[cur_left:cur_right) , tree node tree_id
+  void Build(const std::vector<T>& arr, int cur_left, int cur_right, int tree_id) {
+    if (cur_left == cur_right) {
+      tree_[tree_id] = arr[cur_left];
       return;
     }
-    int m = s + (t - s) / 2;
-    Build(arr, s, m, Left(p));
-    Build(arr, m + 1, t, Right(p));
-    tree_[p] = tree_[Left(p)] + tree_[Right(p)];
+    int m = cur_left + (cur_right - cur_left) / 2;
+    Build(arr, cur_left, m, Left(tree_id));
+    Build(arr, m + 1, cur_right, Right(tree_id));
+    tree_[tree_id] = tree_[Left(tree_id)] + tree_[Right(tree_id)];
   }
 };
