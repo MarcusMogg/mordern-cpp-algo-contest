@@ -1,0 +1,37 @@
+{
+ "exampleTestcases": "\"08-15\"\n\"08-18\"\n\"08-16\"\n\"08-19\"\n\"10-01\"\n\"10-31\"\n\"11-01\"\n\"12-31\"",
+ "name": "countDaysTogether",
+ "params": [
+  {
+   "c_type": "std::string",
+   "name": "arriveAlice",
+   "parser_type": "StringParser",
+   "type": "string"
+  },
+  {
+   "c_type": "std::string",
+   "name": "leaveAlice",
+   "parser_type": "StringParser",
+   "type": "string"
+  },
+  {
+   "c_type": "std::string",
+   "name": "arriveBob",
+   "parser_type": "StringParser",
+   "type": "string"
+  },
+  {
+   "c_type": "std::string",
+   "name": "leaveBob",
+   "parser_type": "StringParser",
+   "type": "string"
+  }
+ ],
+ "program_cname": "countdaysspenttogether",
+ "program_name": "count-days-spent-together",
+ "return": {
+  "c_type": "int",
+  "type": "integer"
+ },
+ "systemdesign": false
+}
