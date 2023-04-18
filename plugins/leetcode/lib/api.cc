@@ -115,6 +115,7 @@ void GeneratorCommand::ConvertMetaJson(nlohmann::json& meta) {
       for (auto& i : methdod["params"]) {
         i["c_type"] = LctypeToCtype(i["type"]);
         i["parser_type"] = LcParseType(i["type"]);
+        i["need_ref"] = NeedRef(i["type"]);
       }
       methdod["return"]["c_type"] = LctypeToCtype(methdod["return"]["type"]);
     }
@@ -124,6 +125,7 @@ void GeneratorCommand::ConvertMetaJson(nlohmann::json& meta) {
     for (auto& i : meta["params"]) {
       i["c_type"] = LctypeToCtype(i["type"]);
       i["parser_type"] = LcParseType(i["type"]);
+      i["need_ref"] = NeedRef(i["type"]);
     }
     meta["return"]["c_type"] = LctypeToCtype(meta["return"]["type"]);
   }

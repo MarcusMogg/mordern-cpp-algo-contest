@@ -10,6 +10,8 @@
 #include <iostream>
 #include <iterator>
 #include <memory>
+#include <optional>
+#include <queue>
 #include <span>
 #include <stdexcept>
 #include <string>
@@ -20,6 +22,7 @@
 #include <vector>
 #include <xutility>
 
+#include "leetcode_struct.h"
 #include "token.h"
 
 namespace leetcode::lib {
@@ -238,6 +241,54 @@ struct DynamicTestCase {
       throw ParseError("expected kComma or kSquareBracketsRight after parse");
     }
     test_cases++;
+  }
+};
+
+template <CanParse<InputType> T>
+struct NullableParser {
+  using DataType = std::optional<typename T::DataType>;
+
+  [[nodiscard]] static DataType Parse(InputType test_cases) {
+    auto& token = *test_cases;
+    if (token.type == Token::TokenType::kNull) {
+      test_cases++;
+      return {};
+    }
+    return T{}.Parse(test_cases);
+  }
+};
+
+template <CanParse<InputType> T>
+struct TreeParser {
+  using RealDataType = std::vector<typename NullableParser<T>::DataType>;
+  // using TreeType = TreeNode<typename T::DataType>;
+  using TreeType = TreeNode;
+  using DataType = TreeType*;
+
+  [[nodiscard]] static RealDataType ParseRawData(InputType test_cases) {
+    return VectorParser<NullableParser<T>>::Parse(test_cases);
+  }
+
+  static DataType Parse(InputType test_cases) {
+    const auto raw_data = ParseRawData(test_cases);
+    auto* root = new TreeType();
+    std::queue<std::reference_wrapper<TreeType*>> q;
+    auto it = raw_data.begin();
+    q.emplace(root);
+    while (it != raw_data.end() && !q.empty()) {
+      auto front = q.front();
+      if (it->has_value()) {
+        if (front == nullptr) {
+          front.get() = new TreeType();
+        }
+        front.get()->val = it->value();
+        q.emplace(front.get()->left);
+        q.emplace(front.get()->right);
+      }
+      q.pop();
+      ++it;
+    }
+    return root;
   }
 };
 

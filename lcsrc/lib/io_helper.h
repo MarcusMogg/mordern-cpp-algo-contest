@@ -5,6 +5,8 @@
 #include <iostream>
 #include <vector>
 
+#include "leetcode_struct.h"
+
 namespace leetcode::lib {
 
 template <class T>
@@ -19,6 +21,7 @@ std::ostream& operator<<(std::ostream& out, const std::vector<T>& v) {
   out << "]";
   return out;
 }
+std::ostream& operator<<(std::ostream& out, const TreeNode* v);
 
 template <class Tuple, std::size_t N>
 struct TuplePrinter {

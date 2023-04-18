@@ -4,20 +4,20 @@
 
 namespace leetcode::{{program_cname}} {
 {% if not systemdesign %}
-{{ return.c_type }} Solve({% for p in params %}const {{ p.c_type }}& {{p.name}} {% if not loop.is_last %}, {% endif %}{% endfor %});
+{{ return.c_type }} Solve({% for p in params %}{% if not p.need_ref %}{{ p.c_type }}{% else %}const {{ p.c_type }}&{% endif %} {{p.name}} {% if not loop.is_last %}, {% endif %}{% endfor %});
 
 namespace standard {
-{{ return.c_type }} Solve({% for p in params %}const {{ p.c_type }}& {{p.name}} {% if not loop.is_last %}, {% endif %}{% endfor %});
+{{ return.c_type }} Solve({% for p in params %}{% if not p.need_ref %}{{ p.c_type }}{% else %}const {{ p.c_type }}&{% endif %} {{p.name}} {% if not loop.is_last %}, {% endif %}{% endfor %});
 }  // namespace standard
 {% else %}
 class {{classname}} {
 public:
-  explicit {{classname}}({% for p in constructor.params %}const {{ p.c_type }}& {{p.name}} {% if not loop.is_last %}, {% endif %}{% endfor %});
+  explicit {{classname}}({% for p in constructor.params %}{% if not p.need_ref %}{{ p.c_type }}{% else %}const {{ p.c_type }}&{% endif %} {{p.name}} {% if not loop.is_last %}, {% endif %}{% endfor %});
 
-  {% for m in methods %}{{m.return.c_type}} {{m.name}}({% for p in m.params %}const {{ p.c_type }}& {{p.name}} {% if not loop.is_last %},{% endif %}{% endfor %});{% endfor %}
+  {% for m in methods %}{{m.return.c_type}} {{m.name}}({% for p in m.params %}{% if not p.need_ref %}{{ p.c_type }}{% else %}const {{ p.c_type }}&{% endif %} {{p.name}} {% if not loop.is_last %},{% endif %}{% endfor %});{% endfor %}
 
-  static std::shared_ptr<{{classname}}> Build({% for p in constructor.params %}const {{ p.c_type }}& {{p.name}} {% if not loop.is_last %}, {% endif %}{% endfor %}) {
-    return std::make_shared<{{classname}}>({% for p in constructor.params %}{{p.name}} {% if not loop.is_last %}, {% endif %}{% endfor %});
+  static std::shared_ptr<{{classname}}> Build({% for p in constructor.params %}{% if not p.need_ref %}{{ p.c_type }}{% else %}const {{ p.c_type }}&{% endif %} {{p.name}} {% if not loop.is_last %}, {% endif %}{% endfor %}) {
+    return std::make_shared<{{classname}}>({% for p in constructor.params %}{{p.name}} {% if not p.need_ref %}, {% endif %}{% endfor %});
   }
 };{% endif %}
 }  // namespace leetcode::{{ program_cname }}

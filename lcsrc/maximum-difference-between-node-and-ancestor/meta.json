@@ -1,0 +1,20 @@
+{
+ "exampleTestcases": "[8,3,10,1,6,null,14,null,null,4,7,13]\n[1,null,2,null,0,3]",
+ "name": "maxAncestorDiff",
+ "params": [
+  {
+   "c_type": "TreeNode*",
+   "name": "root",
+   "need_ref": false,
+   "parser_type": "TreeParser<IntParser>",
+   "type": "TreeNode"
+  }
+ ],
+ "program_cname": "maximumdifferencebetweennodeandancestor",
+ "program_name": "maximum-difference-between-node-and-ancestor",
+ "return": {
+  "c_type": "int",
+  "type": "integer"
+ },
+ "systemdesign": false
+}

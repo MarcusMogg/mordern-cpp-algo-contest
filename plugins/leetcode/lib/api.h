@@ -4,6 +4,7 @@
 #include <map>
 #include <memory>
 #include <regex>
+#include <set>
 #include <string>
 #include <string_view>
 #include <type_traits>
@@ -36,6 +37,7 @@ inline std::string_view LctypeToCtype(std::string_view lctype) {
       {"string[][]", "std::vector<std::vector<std::string>>"},
       {"list<boolean>", "std::vector<bool>"},
       {"boolean", "bool"},
+      {"TreeNode", "TreeNode*"},
   };
 
   const auto it = kConvertMap.find(lctype);
@@ -43,6 +45,13 @@ inline std::string_view LctypeToCtype(std::string_view lctype) {
     return "Unknown";
   }
   return it->second;
+}
+
+inline bool NeedRef(std::string_view lctype) {
+  // TODO(mogg): new type here
+  static const std::set<std::string_view> kConvertMap{"integer", "boolean", "TreeNode"};
+
+  return !kConvertMap.contains(lctype);
 }
 
 inline std::string_view LcParseType(std::string_view lctype) {
@@ -56,6 +65,7 @@ inline std::string_view LcParseType(std::string_view lctype) {
       {"string[][]", "VectorParser<VectorParser<StringParser>>"},
       {"list<boolean>", "VectorParser<BoolParser>"},
       {"boolean", "BoolParser"},
+      {"TreeNode", "TreeParser<IntParser>"},
   };
 
   const auto it = kConvertMap.find(lctype);

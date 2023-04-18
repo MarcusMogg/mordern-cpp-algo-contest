@@ -3,7 +3,7 @@
 namespace leetcode::{{ program_cname }} {
 {% if not systemdesign %}
 {{ return.c_type }} Solve(
-{% for p in params %}   const {{ p.c_type }}& {{p.name}} {% if not loop.is_last %},
+{% for p in params %}   {% if not p.need_ref %}{{ p.c_type }}{% else %}const {{ p.c_type }}&{% endif %} {{p.name}} {% if not loop.is_last %},
 {% endif %}{% endfor %}) {
   // TODO(): your solution here
   return {};
@@ -11,17 +11,17 @@ namespace leetcode::{{ program_cname }} {
 
 namespace standard {
 {{ return.c_type }} Solve(
-{% for p in params %}   const {{ p.c_type }}& {{p.name}} {% if not loop.is_last %},
+{% for p in params %}   {% if not p.need_ref %}{{ p.c_type }}{% else %}const {{ p.c_type }}&{% endif %} {{p.name}} {% if not loop.is_last %},
 {% endif %}{% endfor %}) {
   // TODO(): official answer here
   return {};
 }
 }  // namespace standard
 {% else %}
-{{classname}}::{{classname}}({% for p in constructor.params %}const {{ p.c_type }}& {{p.name}} {% if not loop.is_last %}, {% endif %}{% endfor %}) {}
+{{classname}}::{{classname}}({% for p in constructor.params %}{% if not p.need_ref %}{{ p.c_type }}{% else %}const {{ p.c_type }}&{% endif %} {{p.name}} {% if not loop.is_last %}, {% endif %}{% endfor %}) {}
 
 {% for m in methods %}
-{{m.return.c_type}} {{classname}}::{{m.name}}({% for p in m.params %}const {{ p.c_type }}& {{p.name}} {% if not loop.is_last %},{% endif %}{% endfor %}){
+{{m.return.c_type}} {{classname}}::{{m.name}}({% for p in m.params %}{% if not p.need_ref %}{{ p.c_type }}{% else %}const {{ p.c_type }}&{% endif %} {{p.name}} {% if not loop.is_last %},{% endif %}{% endfor %}){
   return {};
 }{% endfor %}
 

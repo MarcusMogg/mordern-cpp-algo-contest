@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 
+#include "leetcode_struct.h"
 #include "segtree.h"
 
 namespace leetcode::lib {

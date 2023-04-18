@@ -16,4 +16,25 @@ std::string ReadFile(const std::filesystem::path& path) {
   out.append(buf, 0, stream.gcount());
   return out;
 }
+
+std::ostream& operator<<(std::ostream& out, const TreeNode* v) {
+  out << '[';
+
+  std::queue<const TreeNode*> q;
+  q.emplace(v);
+  while (!q.empty()) {
+    const auto* c = q.front();
+    if (c != nullptr) {
+      out << c->val << ", ";
+      q.emplace(c->left);
+      q.emplace(c->right);
+    } else {
+      out << "null, ";
+    }
+    q.pop();
+  }
+  out << "\b\b";
+  out << "]";
+  return out;
+}
 }  // namespace leetcode::lib
