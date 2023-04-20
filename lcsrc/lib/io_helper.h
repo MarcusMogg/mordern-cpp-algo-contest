@@ -1,5 +1,6 @@
 #pragma once
 
+#include <algorithm>
 #include <filesystem>
 #include <functional>
 #include <iostream>
@@ -8,6 +9,14 @@
 #include "leetcode_struct.h"
 
 namespace leetcode::lib {
+
+template <class T1, class T2>
+std::ostream& operator<<(std::ostream& out, const std::pair<T1, T2>& v) {
+  out << '<';
+  out << v.first << ", " << v.second;
+  out << ">";
+  return out;
+}
 
 template <class T>
 std::ostream& operator<<(std::ostream& out, const std::vector<T>& v) {
