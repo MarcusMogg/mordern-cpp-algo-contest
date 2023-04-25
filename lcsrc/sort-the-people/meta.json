@@ -1,0 +1,27 @@
+{
+ "exampleTestcases": "[\"Mary\",\"John\",\"Emma\"]\n[180,165,170]\n[\"Alice\",\"Bob\",\"Bob\"]\n[155,185,150]",
+ "name": "sortPeople",
+ "params": [
+  {
+   "c_type": "std::vector<std::string>",
+   "name": "names",
+   "need_ref": true,
+   "parser_type": "VectorParser<StringParser>",
+   "type": "string[]"
+  },
+  {
+   "c_type": "std::vector<int>",
+   "name": "heights",
+   "need_ref": true,
+   "parser_type": "VectorParser<IntParser>",
+   "type": "integer[]"
+  }
+ ],
+ "program_cname": "sortthepeople",
+ "program_name": "sort-the-people",
+ "return": {
+  "c_type": "std::vector<std::string>",
+  "type": "string[]"
+ },
+ "systemdesign": false
+}
