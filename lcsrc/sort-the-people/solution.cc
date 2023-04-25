@@ -30,11 +30,9 @@ std::vector<std::string> Solve(
   for (int i = 0; i < names.size(); ++i) {
     m[heights[i]] = i;
   }
-  std::vector<std::string> res;
-  res.reserve(names.size());
-  std::transform(m.rbegin(), m.rend(), std::back_inserter(res), [&](const auto& i) {
-    return names[i.second];
-  });
+  std::vector<std::string> res(names.size());
+  std::transform(
+      m.crbegin(), m.crend(), res.begin(), [&](const auto& i) { return names[i.second]; });
   return res;
 }
 }  // namespace standard
