@@ -1,7 +1,9 @@
 #include "solution.h"
 
+#include <algorithm>
 #include <iterator>
 #include <type_traits>
+#include <vector>
 
 namespace leetcode::maximumsumoftwononoverlappingsubarrays {
 
@@ -12,32 +14,27 @@ int Solve(const std::vector<int>& nums, int firstLen, int secondLen) {
 
 namespace standard {
 int Solve(const std::vector<int>& nums, int firstLen, int secondLen) {
-  const auto max_element_vec = []<class It>(It begin, It end) {
-    auto max = *begin;
-    std::vector<std::remove_cvref_t<decltype(*begin)>> res;
-    std::transform(begin, end, std::back_inserter(res), [&max](const auto& cur) {
-      max = std::max(cur, max);
-      return max;
-    });
+  std::vector<int> sum(nums.size() + 1, 0);
+  for (int i = 0; i < nums.size(); i++) {
+    sum[i + 1] = sum[i] + nums[i];
+  }
+
+  const auto calculate_max = [&nums, &sum](int first, int second) {
+    int res = 0;
+    std::vector<int> l_max_value(nums.size(), 0);
+    int r_max_value = 0;
+
+    for (int i = first; i < nums.size(); ++i) {
+      l_max_value[i] = std::max(l_max_value[i - 1], sum[i] - sum[i - first]);
+    }
+    for (int i = static_cast<int>(nums.size()) - second; i > 0; --i) {
+      r_max_value = std::max(r_max_value, sum[i + second] - sum[i]);
+      res = std::max(res, r_max_value + l_max_value[i]);
+    }
     return res;
   };
-  const auto first_max = max_element_vec(nums.cbegin(), nums.cend());
-  int res = 0;
-  int second_max = 0;
-  for (int i = static_cast<int>(nums.size()) - 1; i >= firstLen; --i) {
-    second_max = std::max(nums[i], second_max);
-    if (i <= static_cast<int>(nums.size()) - secondLen) {
-      res = std::max(res, first_max[i - 1] + second_max);
-    }
-  }
-  second_max = 0;
-  for (int i = static_cast<int>(nums.size()) - 1; i >= secondLen; --i) {
-    second_max = std::max(nums[i], second_max);
-    if (i <= static_cast<int>(nums.size()) - firstLen) {
-      res = std::max(res, first_max[i - 1] + second_max);
-    }
-  }
-  return res;
+
+  return std::max(calculate_max(firstLen, secondLen), calculate_max(secondLen, firstLen));
 }
 }  // namespace standard
 
