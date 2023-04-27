@@ -33,10 +33,10 @@ int Solve(const std::vector<std::string>& words) {
       | to<std::vector<std::pair<std::string_view, int>>>();
 
   int res = 1;
-  subrange prev{words_view.begin(), words_view.begin()};
-  subrange remain{words_view.begin(), words_view.end()};
 
-  for (int len = 1; !remain.empty(); len++) {
+  for (subrange prev{words_view.begin(), words_view.begin()},
+       remain{words_view.begin(), words_view.end()};
+       int len : views::iota(1) | views::take_while([&remain](auto) { return !remain.empty(); })) {
     remain =
         std::ranges::partition(remain, [&len](const auto& sv) { return sv.first.size() < len; });
     subrange cur{prev.end(), remain.begin()};
