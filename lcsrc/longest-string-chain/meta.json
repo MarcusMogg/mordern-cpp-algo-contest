@@ -1,0 +1,20 @@
+{
+ "exampleTestcases": "[\"a\",\"b\",\"ba\",\"bca\",\"bda\",\"bdca\"]\n[\"xbc\",\"pcxbcf\",\"xb\",\"cxbc\",\"pcxbc\"]\n[\"abcd\",\"dbqca\"]",
+ "name": "longestStrChain",
+ "params": [
+  {
+   "c_type": "std::vector<std::string>",
+   "name": "words",
+   "need_ref": true,
+   "parser_type": "VectorParser<StringParser>",
+   "type": "string[]"
+  }
+ ],
+ "program_cname": "longeststringchain",
+ "program_name": "longest-string-chain",
+ "return": {
+  "c_type": "int",
+  "type": "integer"
+ },
+ "systemdesign": false
+}
