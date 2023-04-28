@@ -38,6 +38,7 @@ inline std::string_view LctypeToCtype(std::string_view lctype) {
       {"list<boolean>", "std::vector<bool>"},
       {"boolean", "bool"},
       {"TreeNode", "TreeNode*"},
+      {"void", "void"},
   };
 
   const auto it = kConvertMap.find(lctype);

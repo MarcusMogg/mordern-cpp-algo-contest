@@ -1,0 +1,63 @@
+{
+ "classname": "DinnerPlates",
+ "constructor": {
+  "params": [
+   {
+    "c_type": "int",
+    "name": "capacity",
+    "need_ref": false,
+    "parser_type": "IntParser",
+    "type": "integer"
+   }
+  ]
+ },
+ "exampleTestcases": "[\"DinnerPlates\",\"push\",\"push\",\"push\",\"push\",\"push\",\"popAtStack\",\"push\",\"push\",\"popAtStack\",\"popAtStack\",\"pop\",\"pop\",\"pop\",\"pop\",\"pop\"]\n[[2],[1],[2],[3],[4],[5],[0],[20],[21],[0],[2],[],[],[],[],[]]",
+ "methods": [
+  {
+   "name": "push",
+   "params": [
+    {
+     "c_type": "int",
+     "name": "val",
+     "need_ref": false,
+     "parser_type": "IntParser",
+     "type": "integer"
+    }
+   ],
+   "return": {
+    "c_type": "void",
+    "type": "void"
+   }
+  },
+  {
+   "name": "pop",
+   "params": [],
+   "return": {
+    "c_type": "int",
+    "type": "integer"
+   }
+  },
+  {
+   "name": "popAtStack",
+   "params": [
+    {
+     "c_type": "int",
+     "name": "index",
+     "need_ref": false,
+     "parser_type": "IntParser",
+     "type": "integer"
+    }
+   ],
+   "return": {
+    "c_type": "int",
+    "type": "integer"
+   }
+  }
+ ],
+ "program_cname": "dinnerplatestacks",
+ "program_name": "dinner-plate-stacks",
+ "return": {
+  "type": "boolean"
+ },
+ "systemdesign": true
+}

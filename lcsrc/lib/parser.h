@@ -52,6 +52,10 @@ struct TestCase {
 
   std::tuple<Parser...> parsers;
 
+  template <class... T>
+  static auto ParseImpl(InputType /**/) {
+    return std::tuple<>{};
+  }
   template <CanParse<InputType> T, CanParse<InputType>... Args>
   static auto ParseImpl(InputType test_cases, T&& cur, Args&&... args) {
     auto tmp = std::tuple<typename std::remove_cvref_t<T>::DataType>{cur.Parse(test_cases)};

@@ -110,6 +110,7 @@ void GeneratorCommand::ConvertMetaJson(nlohmann::json& meta) {
     for (auto& i : meta["constructor"]["params"]) {
       i["c_type"] = LctypeToCtype(i["type"]);
       i["parser_type"] = LcParseType(i["type"]);
+      i["need_ref"] = NeedRef(i["type"]);
     }
     for (auto& methdod : meta["methods"]) {
       for (auto& i : methdod["params"]) {

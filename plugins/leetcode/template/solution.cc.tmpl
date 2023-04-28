@@ -18,7 +18,7 @@ namespace standard {
 }
 }  // namespace standard
 {% else %}
-{{classname}}::{{classname}}({% for p in constructor.params %}{% if not p.need_ref %}{{ p.c_type }}{% else %}const {{ p.c_type }}&{% endif %} {{p.name}} {% if not loop.is_last %}, {% endif %}{% endfor %}) {}
+{{classname}}::{{classname}}({% for p in constructor.params %}{% if not p.need_ref %}{{ p.c_type }}{% else %}const {{ p.c_type }}&{% endif %}{{p.name}}{% if not loop.is_last %}, {% endif %}{% endfor %}) {}
 
 {% for m in methods %}
 {{m.return.c_type}} {{classname}}::{{m.name}}({% for p in m.params %}{% if not p.need_ref %}{{ p.c_type }}{% else %}const {{ p.c_type }}&{% endif %} {{p.name}} {% if not loop.is_last %},{% endif %}{% endfor %}){
