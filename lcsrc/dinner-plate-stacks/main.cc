@@ -32,29 +32,31 @@ int main(int /*argc*/, const char** argv) {
         std::cout << "----------------------\n";
         if (i == "DinnerPlates") {
           Parser::Run<"DinnerPlates">(it, [&solution](DinnerPlatesParser::DataType&& input) {
+            std::cout << "Build DinnerPlates input: ";
+            print(input);
             solution = std::apply(DinnerPlates::Build, input);
           });
         } else if (i == "push") {
           Parser::Run<"push">(it, [&solution](pushParser::DataType&& input) {
-            std::cout << "push input:\n";
+            std::cout << "call push input: ";
             print(input);
-            std::cout << "ouput:\nnull\n";
+            std::cout << "ouput: null\n";
             std::apply(&DinnerPlates::push, std::tuple_cat(std::make_tuple(solution.get()), input));
           });
         } else if (i == "pop") {
           Parser::Run<"pop">(it, [&solution](popParser::DataType&& input) {
-            std::cout << "pop input:\n";
+            std::cout << "call pop input: ";
             print(input);
-            std::cout << "ouput:\n";
+            std::cout << "ouput: ";
             auto res = std::apply(
                 &DinnerPlates::pop, std::tuple_cat(std::make_tuple(solution.get()), input));
             std::cout << res << "\n";
           });
         } else if (i == "popAtStack") {
           Parser::Run<"popAtStack">(it, [&solution](popAtStackParser::DataType&& input) {
-            std::cout << "popAtStack input:\n";
+            std::cout << "call popAtStack input: ";
             print(input);
-            std::cout << "ouput:\n";
+            std::cout << "ouput: ";
             auto res = std::apply(
                 &DinnerPlates::popAtStack, std::tuple_cat(std::make_tuple(solution.get()), input));
             std::cout << res << "\n";
