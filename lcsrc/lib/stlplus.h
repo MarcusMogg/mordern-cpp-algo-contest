@@ -9,6 +9,7 @@
 #include <ranges>
 #include <set>
 #include <string>
+#include <type_traits>
 #include <vector>
 
 #include "leetcode_struct.h"
@@ -71,5 +72,4 @@ template <class Container, class... Types>
   return std::ranges::_Range_closure<ToClassFn<Container>, std::decay_t<Types>...>{
       std::forward<Types>(Args)...};
 }
-
 }  // namespace leetcode::lib
