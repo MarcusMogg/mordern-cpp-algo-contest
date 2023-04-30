@@ -12,18 +12,9 @@ using namespace leetcode::lib;
 
 namespace leetcode::longeststringchain {
 bool IsPrev(std::string_view longer, std::string_view shorter) {
-  int cnt = 0;
-  for (char i : longer) {
-    if (i == *shorter.begin()) {
-      shorter = shorter.substr(1);
-    } else {
-      cnt++;
-    }
-    if (cnt > 1) {
-      return false;
-    }
-  }
-  return true;
+  const auto [sub1, sub2] = std::ranges::mismatch(longer, shorter);
+  const auto [sub3, sub4] = std::ranges::mismatch(sub1 + 1, longer.end(), sub2, shorter.end());
+  return sub3 == longer.end() && sub4 == shorter.end();
 }
 
 int Solve(const std::vector<std::string>& words) {
@@ -58,6 +49,12 @@ int Solve(const std::vector<std::string>& words) {
 }
 
 namespace standard {
+bool IsPrev(std::string_view longer, std::string_view shorter) {
+  const auto [sub1, sub2] =
+      std::mismatch(longer.begin(), longer.end(), shorter.begin(), shorter.end());
+  const auto [sub3, sub4] = std::mismatch(sub1 + 1, longer.end(), sub2, shorter.end());
+  return sub3 == longer.end() && sub4 == shorter.end();
+}
 
 int Solve(const std::vector<std::string>& words) {
   std::vector<std::string_view> words_view(words.begin(), words.end());
