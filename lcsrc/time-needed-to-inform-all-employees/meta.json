@@ -1,0 +1,41 @@
+{
+ "exampleTestcases": "1\n0\n[-1]\n[0]\n6\n2\n[2,2,-1,2,2,2]\n[0,0,1,0,0,0]",
+ "name": "numOfMinutes",
+ "params": [
+  {
+   "c_type": "int",
+   "name": "n",
+   "need_ref": false,
+   "parser_type": "IntParser",
+   "type": "integer"
+  },
+  {
+   "c_type": "int",
+   "name": "headID",
+   "need_ref": false,
+   "parser_type": "IntParser",
+   "type": "integer"
+  },
+  {
+   "c_type": "std::vector<int>",
+   "name": "manager",
+   "need_ref": true,
+   "parser_type": "VectorParser<IntParser>",
+   "type": "integer[]"
+  },
+  {
+   "c_type": "std::vector<int>",
+   "name": "informTime",
+   "need_ref": true,
+   "parser_type": "VectorParser<IntParser>",
+   "type": "integer[]"
+  }
+ ],
+ "program_cname": "timeneededtoinformallemployees",
+ "program_name": "time-needed-to-inform-all-employees",
+ "return": {
+  "c_type": "int",
+  "type": "integer"
+ },
+ "systemdesign": false
+}
