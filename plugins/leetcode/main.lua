@@ -77,5 +77,6 @@ function main()
             path.join(GetTargetDir(),name,"simple_test_cases")
         })
     end
-    task.run("format")
+
+    task.run("format",{files = path.join("lcsrc",name,"*")})
 end

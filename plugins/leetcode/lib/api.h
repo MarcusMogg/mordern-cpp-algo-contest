@@ -31,6 +31,7 @@ inline std::string_view LctypeToCtype(std::string_view lctype) {
   static const std::map<std::string_view, std::string_view> kConvertMap{
       {"integer", "int"},
       {"integer[]", "std::vector<int>"},
+      {"list<integer>", "std::vector<int>"},
       {"integer[][]", "std::vector<std::vector<int>>"},
       {"string", "std::string"},
       {"string[]", "std::vector<std::string>"},

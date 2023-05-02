@@ -1,0 +1,34 @@
+{
+  "exampleTestcases": "2\n3\n10\n3\n5\n15",
+  "name": "powerfulIntegers",
+  "params": [
+    {
+      "c_type": "int",
+      "name": "x",
+      "need_ref": false,
+      "parser_type": "IntParser",
+      "type": "integer"
+    },
+    {
+      "c_type": "int",
+      "name": "y",
+      "need_ref": false,
+      "parser_type": "IntParser",
+      "type": "integer"
+    },
+    {
+      "c_type": "int",
+      "name": "bound",
+      "need_ref": false,
+      "parser_type": "IntParser",
+      "type": "integer"
+    }
+  ],
+  "program_cname": "powerfulintegers",
+  "program_name": "powerful-integers",
+  "return": {
+    "c_type": "std::vector<int>",
+    "type": "list<integer>"
+  },
+  "systemdesign": false
+}
