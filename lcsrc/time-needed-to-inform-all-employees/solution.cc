@@ -3,6 +3,7 @@
 #include <queue>
 #include <utility>
 #include <vector>
+#include <xutility>
 
 namespace leetcode::timeneededtoinformallemployees {
 
@@ -14,7 +15,9 @@ int Solve(int n, int headID, const std::vector<int>& manager, const std::vector<
     }
     children[manager[i]].emplace_back(i);
   }
-
+  // better in c++ 23 : Deducing This
+  // const auto dfs = [&children, &informTime](this auto& self, int head, int ts) -> int {}
+  // so we can use dfs(headID, 0) instead of dfs(dfs, headID, 0) both inside and outside lambda
   const auto dfs = [&children, &informTime](auto&& self, int head, int ts) -> int {
     ts = ts + informTime[head];
     int res = ts;
