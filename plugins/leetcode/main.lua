@@ -78,5 +78,6 @@ function main()
         })
     end
 
-    task.run("format",{files = path.join("lcsrc",name,"*")})
+    task.run("format",{files = path.join("lcsrc",name,"*.cc")})
+    task.run("format",{files = path.join("lcsrc",name,"*.h")})
 end

@@ -1,0 +1,20 @@
+{
+ "exampleTestcases": "\"aabcbc\"\n\"abcabcababcc\"\n\"abccba\"",
+ "name": "isValid",
+ "params": [
+  {
+   "c_type": "std::string",
+   "name": "s",
+   "need_ref": true,
+   "parser_type": "StringParser",
+   "type": "string"
+  }
+ ],
+ "program_cname": "checkifwordisvalidaftersubstitutions",
+ "program_name": "check-if-word-is-valid-after-substitutions",
+ "return": {
+  "c_type": "bool",
+  "type": "boolean"
+ },
+ "systemdesign": false
+}
