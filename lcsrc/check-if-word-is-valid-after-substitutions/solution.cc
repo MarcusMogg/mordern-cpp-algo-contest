@@ -1,12 +1,28 @@
 #include "solution.h"
 
 #include <stack>
+#include <tuple>
 
 namespace leetcode::checkifwordisvalidaftersubstitutions {
 
 bool Solve(const std::string& s) {
-  // TODO(): your solution here
-  return {};
+  auto st = std::stack<char>{};
+  const auto check_top = [&st](char c) { return !st.empty() && st.top() == c; };
+  for (auto c : s) {
+    if (c == 'a' || c == 'b') {
+      st.push(c);
+    } else if (c == 'c') {
+      if (!check_top('b')) {
+        return false;
+      }
+      st.pop();
+      if (!check_top('a')) {
+        return false;
+      }
+      st.pop();
+    }
+  }
+  return st.empty();
 }
 
 namespace standard {
