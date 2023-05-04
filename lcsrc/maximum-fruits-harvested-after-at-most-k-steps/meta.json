@@ -1,0 +1,34 @@
+{
+ "exampleTestcases": "[[2,8],[6,3],[8,6]]\n5\n4\n[[0,9],[4,1],[5,7],[6,2],[7,4],[10,9]]\n5\n4\n[[0,3],[6,4],[8,5]]\n3\n2",
+ "name": "maxTotalFruits",
+ "params": [
+  {
+   "c_type": "std::vector<std::vector<int>>",
+   "name": "fruits",
+   "need_ref": true,
+   "parser_type": "VectorParser<VectorParser<IntParser>>",
+   "type": "integer[][]"
+  },
+  {
+   "c_type": "int",
+   "name": "startPos",
+   "need_ref": false,
+   "parser_type": "IntParser",
+   "type": "integer"
+  },
+  {
+   "c_type": "int",
+   "name": "k",
+   "need_ref": false,
+   "parser_type": "IntParser",
+   "type": "integer"
+  }
+ ],
+ "program_cname": "maximumfruitsharvestedafteratmostksteps",
+ "program_name": "maximum-fruits-harvested-after-at-most-k-steps",
+ "return": {
+  "c_type": "int",
+  "type": "integer"
+ },
+ "systemdesign": false
+}
