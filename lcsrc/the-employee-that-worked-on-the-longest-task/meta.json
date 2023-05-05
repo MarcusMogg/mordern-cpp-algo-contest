@@ -1,0 +1,27 @@
+{
+ "exampleTestcases": "10\n[[0,3],[2,5],[0,9],[1,15]]\n26\n[[1,1],[3,7],[2,12],[7,17]]\n2\n[[0,10],[1,20]]",
+ "name": "hardestWorker",
+ "params": [
+  {
+   "c_type": "int",
+   "name": "n",
+   "need_ref": false,
+   "parser_type": "IntParser",
+   "type": "integer"
+  },
+  {
+   "c_type": "std::vector<std::vector<int>>",
+   "name": "logs",
+   "need_ref": true,
+   "parser_type": "VectorParser<VectorParser<IntParser>>",
+   "type": "integer[][]"
+  }
+ ],
+ "program_cname": "theemployeethatworkedonthelongesttask",
+ "program_name": "the-employee-that-worked-on-the-longest-task",
+ "return": {
+  "c_type": "int",
+  "type": "integer"
+ },
+ "systemdesign": false
+}
