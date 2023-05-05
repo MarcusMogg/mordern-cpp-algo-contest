@@ -13,6 +13,7 @@
 namespace leetcode::twosum {
 using namespace std::ranges::views;
 using namespace leetcode::lib;
+using std::ranges::to;
 
 namespace detail {
 

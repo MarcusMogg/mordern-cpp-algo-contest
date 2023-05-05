@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <ranges>
+#include <span>
 #include <vector>
 #include <xutility>
 
@@ -10,18 +11,16 @@
 namespace leetcode::theemployeethatworkedonthelongesttask {
 
 int Solve(int /**/, const std::vector<std::vector<int>>& logs) {
-  return -std::max(
-              std::ranges::max(
-                  logs                           //
-                  | std::ranges::views::take(1)  //
-                  | std::ranges::views::transform([](const auto& l) {
-                      return std::pair{l[1], -l[0]};
-                    })),
-              std::ranges::max(
-                  std::ranges::views::zip(logs | std::ranges::views::drop(1), logs)  //
-                  | std::ranges::views::transform([](const auto& i) {
-                      return std::pair{std::get<0>(i)[1] - std::get<1>(i)[1], -std::get<0>(i)[0]};
-                    })))
+  const std::vector<std::vector<int>> tmp{{0, 0}};
+  const auto s = std::vector{
+      std::span<const std::vector<int>>{tmp},
+      std::span<const std::vector<int>>{logs},
+  };
+  return -std::ranges::max(
+              std::ranges::views::zip(logs, s | std::ranges::views::join)  //
+              | std::ranges::views::transform([](const auto& i) {
+                  return std::pair{std::get<0>(i)[1] - std::get<1>(i)[1], -std::get<0>(i)[0]};
+                }))
               .second;
 }
 
