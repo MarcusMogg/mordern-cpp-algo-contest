@@ -26,6 +26,26 @@ int Solve(int /**/, const std::vector<std::vector<int>>& logs) {
 
 namespace standard {
 int Solve(int /**/, const std::vector<std::vector<int>>& logs) {
+  int cur = 0;
+  return -std::ranges::max(
+              logs  //
+              | std::ranges::views::transform([&cur](const auto& l) {
+                  auto res = std::pair{l[1] - cur, -l[0]};
+                  cur = l[1];
+                  return res;
+                }))
+              .second;
+  const auto times = logs  //
+                     | std::ranges::views::transform([&cur](const auto& l) {
+                         auto res = std::pair{l[1] - cur, -l[0]};
+                         cur = l[1];
+                         return res;
+                       })  //
+                     | std::ranges::to<std::vector<std::pair<int, int>>>();
+  return -std::ranges::max_element(times)->second;
+}
+
+int Solve1(int /**/, const std::vector<std::vector<int>>& logs) {
   std::vector<std::pair<int, int>> times(logs.size());
   int cur = 0;
   std::transform(logs.cbegin(), logs.cend(), times.begin(), [&cur](const auto& l) {
