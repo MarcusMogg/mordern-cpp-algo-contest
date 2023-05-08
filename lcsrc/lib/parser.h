@@ -139,6 +139,18 @@ struct StringParser {
   }
 };
 
+struct CharParser {
+  using DataType = char;
+
+  [[nodiscard]] static DataType Parse(InputType test_cases) {
+    auto res = StringParser::Parse(test_cases);
+    if (res.size() != 1) {
+      throw ParseError("expected one char");
+    }
+    return res[0];
+  }
+};
+
 struct BoolParser {
   using DataType = bool;
 

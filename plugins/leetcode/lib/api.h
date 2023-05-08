@@ -40,6 +40,7 @@ inline std::string_view LctypeToCtype(std::string_view lctype) {
       {"boolean", "bool"},
       {"TreeNode", "TreeNode*"},
       {"void", "void"},
+      {"character[][]", "std::vector<std::vector<char>>"},
   };
 
   const auto it = kConvertMap.find(lctype);
@@ -68,6 +69,7 @@ inline std::string_view LcParseType(std::string_view lctype) {
       {"list<boolean>", "VectorParser<BoolParser>"},
       {"boolean", "BoolParser"},
       {"TreeNode", "TreeParser<IntParser>"},
+      {"character[][]", "VectorParser<VectorParser<CharParser>>"},
   };
 
   const auto it = kConvertMap.find(lctype);
