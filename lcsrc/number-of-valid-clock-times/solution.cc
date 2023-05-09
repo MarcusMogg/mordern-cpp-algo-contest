@@ -18,10 +18,10 @@ int Solve(const std::string& time) {
   std::string_view hour{time.begin(), time.begin() + 2};
   std::string_view minute{time.begin() + 3, time.end()};
 
-  const auto h = std::ranges::count(std::ranges::views::iota(0, 24), true, [&hour](int i) {
+  const auto h = std::ranges::count_if(std::ranges::views::iota(0, 24), [&hour](int i) {
     return Same(hour, std::format("{:0>2}", i));
   });
-  const auto m = std::ranges::count(std::ranges::views::iota(0, 60), true, [&minute](int i) {
+  const auto m = std::ranges::count_if(std::ranges::views::iota(0, 60), [&minute](int i) {
     return Same(minute, std::format("{:0>2}", i));
   });
 
