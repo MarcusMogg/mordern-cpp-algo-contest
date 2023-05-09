@@ -1,0 +1,20 @@
+{
+ "exampleTestcases": "\"?5:00\"\n\"0?:0?\"\n\"??:??\"",
+ "name": "countTime",
+ "params": [
+  {
+   "c_type": "std::string",
+   "name": "time",
+   "need_ref": true,
+   "parser_type": "StringParser",
+   "type": "string"
+  }
+ ],
+ "program_cname": "numberofvalidclocktimes",
+ "program_name": "number-of-valid-clock-times",
+ "return": {
+  "c_type": "int",
+  "type": "integer"
+ },
+ "systemdesign": false
+}
