@@ -1,0 +1,20 @@
+{
+ "exampleTestcases": "1\n2\n3",
+ "name": "smallestRepunitDivByK",
+ "params": [
+  {
+   "c_type": "int",
+   "name": "k",
+   "need_ref": false,
+   "parser_type": "IntParser",
+   "type": "integer"
+  }
+ ],
+ "program_cname": "smallestintegerdivisiblebyk",
+ "program_name": "smallest-integer-divisible-by-k",
+ "return": {
+  "c_type": "int",
+  "type": "integer"
+ },
+ "systemdesign": false
+}
