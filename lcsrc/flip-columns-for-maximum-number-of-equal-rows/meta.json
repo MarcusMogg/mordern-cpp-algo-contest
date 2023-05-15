@@ -1,0 +1,20 @@
+{
+ "exampleTestcases": "[[0,1],[1,1]]\n[[0,1],[1,0]]\n[[0,0,0],[0,0,1],[1,1,0]]",
+ "name": "maxEqualRowsAfterFlips",
+ "params": [
+  {
+   "c_type": "std::vector<std::vector<int>>",
+   "name": "matrix",
+   "need_ref": true,
+   "parser_type": "VectorParser<VectorParser<IntParser>>",
+   "type": "integer[][]"
+  }
+ ],
+ "program_cname": "flipcolumnsformaximumnumberofequalrows",
+ "program_name": "flip-columns-for-maximum-number-of-equal-rows",
+ "return": {
+  "c_type": "int",
+  "type": "integer"
+ },
+ "systemdesign": false
+}
