@@ -1,0 +1,27 @@
+{
+ "exampleTestcases": "[\"01:15\",\"02:00\"]\n[\"02:00\",\"03:00\"]\n[\"01:00\",\"02:00\"]\n[\"01:20\",\"03:00\"]\n[\"10:00\",\"11:00\"]\n[\"14:00\",\"15:00\"]",
+ "name": "haveConflict",
+ "params": [
+  {
+   "c_type": "std::vector<std::string>",
+   "name": "event1",
+   "need_ref": true,
+   "parser_type": "VectorParser<StringParser>",
+   "type": "string[]"
+  },
+  {
+   "c_type": "std::vector<std::string>",
+   "name": "event2",
+   "need_ref": true,
+   "parser_type": "VectorParser<StringParser>",
+   "type": "string[]"
+  }
+ ],
+ "program_cname": "determineiftwoeventshaveconflict",
+ "program_name": "determine-if-two-events-have-conflict",
+ "return": {
+  "c_type": "bool",
+  "type": "boolean"
+ },
+ "systemdesign": false
+}
