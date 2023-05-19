@@ -1,0 +1,20 @@
+{
+ "exampleTestcases": "\"AAB\"\n\"AAABBC\"\n\"V\"",
+ "name": "numTilePossibilities",
+ "params": [
+  {
+   "c_type": "std::string",
+   "name": "tiles",
+   "need_ref": true,
+   "parser_type": "StringParser",
+   "type": "string"
+  }
+ ],
+ "program_cname": "lettertilepossibilities",
+ "program_name": "letter-tile-possibilities",
+ "return": {
+  "c_type": "int",
+  "type": "integer"
+ },
+ "systemdesign": false
+}
