@@ -1,0 +1,20 @@
+{
+ "exampleTestcases": "[1,4,3,2,4,2,5,null,null,null,null,null,null,4,6]\n[4,3,null,1,2]\n[-4,-2,-5]",
+ "name": "maxSumBST",
+ "params": [
+  {
+   "c_type": "TreeNode*",
+   "name": "root",
+   "need_ref": false,
+   "parser_type": "TreeParser<IntParser>",
+   "type": "TreeNode"
+  }
+ ],
+ "program_cname": "maximumsumbstinbinarytree",
+ "program_name": "maximum-sum-bst-in-binary-tree",
+ "return": {
+  "c_type": "int",
+  "type": "integer"
+ },
+ "systemdesign": false
+}
