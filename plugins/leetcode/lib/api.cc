@@ -143,10 +143,11 @@ std::string GeneratorCommand::CurlLeetcode() {
       R"({{
         "operationName":"questionData",
         "variables":{{"titleSlug":"{}"}},
-        "query": "query questionData($titleSlug: String!) {{\n question(titleSlug: $titleSlug) {{\n    questionId\n    metaData\n    exampleTestcases\n  }}\n}}"
+        "query": "query questionData($titleSlug: String!) {{\n question(titleSlug: $titleSlug) {{\n    questionId\n    metaData\n    exampleTestcases\n  }}\n}}\n"
         }})",
       ProblemName());
-  curl_easy_setopt(handle, CURLOPT_URL, "https://leetcode.com/graphql");  // the URL to post to
+  std::cout << data << "\n";
+  curl_easy_setopt(handle, CURLOPT_URL, "https://leetcode.cn/graphql");  // the URL to post to
   curl_easy_setopt(handle, CURLOPT_POST, 1L);
 
   curl_slist* headers = nullptr;  // init to NULL is important
