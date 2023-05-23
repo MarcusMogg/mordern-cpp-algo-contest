@@ -1,0 +1,41 @@
+{
+ "exampleTestcases": "[5,4,3,2,1]\n[1,1,2,2,3]\n3\n1\n[5,4,3,2,1]\n[1,3,3,3,2]\n3\n2\n[9,8,8,7,6]\n[0,0,0,1,1]\n3\n1",
+ "name": "largestValsFromLabels",
+ "params": [
+  {
+   "c_type": "std::vector<int>",
+   "name": "values",
+   "need_ref": true,
+   "parser_type": "VectorParser<IntParser>",
+   "type": "integer[]"
+  },
+  {
+   "c_type": "std::vector<int>",
+   "name": "labels",
+   "need_ref": true,
+   "parser_type": "VectorParser<IntParser>",
+   "type": "integer[]"
+  },
+  {
+   "c_type": "int",
+   "name": "numWanted",
+   "need_ref": false,
+   "parser_type": "IntParser",
+   "type": "integer"
+  },
+  {
+   "c_type": "int",
+   "name": "useLimit",
+   "need_ref": false,
+   "parser_type": "IntParser",
+   "type": "integer"
+  }
+ ],
+ "program_cname": "largestvaluesfromlabels",
+ "program_name": "largest-values-from-labels",
+ "return": {
+  "c_type": "int",
+  "type": "integer"
+ },
+ "systemdesign": false
+}
