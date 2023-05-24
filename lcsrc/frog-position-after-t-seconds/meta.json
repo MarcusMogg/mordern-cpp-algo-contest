@@ -1,0 +1,41 @@
+{
+ "exampleTestcases": "7\n[[1,2],[1,3],[1,7],[2,4],[2,6],[3,5]]\n2\n4\n7\n[[1,2],[1,3],[1,7],[2,4],[2,6],[3,5]]\n1\n7",
+ "name": "frogPosition",
+ "params": [
+  {
+   "c_type": "int",
+   "name": "n",
+   "need_ref": false,
+   "parser_type": "IntParser",
+   "type": "integer"
+  },
+  {
+   "c_type": "std::vector<std::vector<int>>",
+   "name": "edges",
+   "need_ref": true,
+   "parser_type": "VectorParser<VectorParser<IntParser>>",
+   "type": "integer[][]"
+  },
+  {
+   "c_type": "int",
+   "name": "t",
+   "need_ref": false,
+   "parser_type": "IntParser",
+   "type": "integer"
+  },
+  {
+   "c_type": "int",
+   "name": "target",
+   "need_ref": false,
+   "parser_type": "IntParser",
+   "type": "integer"
+  }
+ ],
+ "program_cname": "frogpositionaftertseconds",
+ "program_name": "frog-position-after-t-seconds",
+ "return": {
+  "c_type": "double",
+  "type": "double"
+ },
+ "systemdesign": false
+}
