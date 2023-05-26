@@ -1,0 +1,20 @@
+{
+ "exampleTestcases": "[[0,1],[1,0]]\n[[0,0,0],[1,1,0],[1,1,0]]\n[[1,0,0],[1,1,0],[1,1,0]]",
+ "name": "shortestPathBinaryMatrix",
+ "params": [
+  {
+   "c_type": "std::vector<std::vector<int>>",
+   "name": "grid",
+   "need_ref": true,
+   "parser_type": "VectorParser<VectorParser<IntParser>>",
+   "type": "integer[][]"
+  }
+ ],
+ "program_cname": "shortestpathinbinarymatrix",
+ "program_name": "shortest-path-in-binary-matrix",
+ "return": {
+  "c_type": "int",
+  "type": "integer"
+ },
+ "systemdesign": false
+}
