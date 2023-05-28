@@ -1,0 +1,27 @@
+{
+ "exampleTestcases": "[[1,3,11],[2,4,6]]\n5\n[[1,3,11],[2,4,6]]\n9\n[[1,10,10],[1,4,5],[2,3,6]]\n7",
+ "name": "kthSmallest",
+ "params": [
+  {
+   "c_type": "std::vector<std::vector<int>>",
+   "name": "mat",
+   "need_ref": true,
+   "parser_type": "VectorParser<VectorParser<IntParser>>",
+   "type": "integer[][]"
+  },
+  {
+   "c_type": "int",
+   "name": "k",
+   "need_ref": false,
+   "parser_type": "IntParser",
+   "type": "integer"
+  }
+ ],
+ "program_cname": "findthekthsmallestsumofamatrixwithsortedrows",
+ "program_name": "find-the-kth-smallest-sum-of-a-matrix-with-sorted-rows",
+ "return": {
+  "c_type": "int",
+  "type": "integer"
+ },
+ "systemdesign": false
+}

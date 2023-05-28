@@ -80,4 +80,5 @@ function main()
 
     task.run("format",{files = path.join("lcsrc",name,"*.cc")})
     task.run("format",{files = path.join("lcsrc",name,"*.h")})
+    task.run("project",{kind = "compile_commands",outputdir = "build"})
 end
