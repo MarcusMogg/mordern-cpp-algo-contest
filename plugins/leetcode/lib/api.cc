@@ -6,6 +6,7 @@
 #include <fstream>
 #include <iostream>
 #include <memory>
+#include <stdexcept>
 #include <string_view>
 
 #include "curl/curl.h"
@@ -97,8 +98,14 @@ void GeneratorCommand::MakeOutputDir() const {
 
 void GeneratorCommand::GenTmpl() const {
   const auto tmpl_dir = std::filesystem::path(TmplDir());
-  for (const auto& entry : std::filesystem::directory_iterator(tmpl_dir)) {
-    GenTmpl(entry.path());
+  try {
+    for (const auto& entry : std::filesystem::directory_iterator(tmpl_dir)) {
+      GenTmpl(entry.path());
+    }
+  } catch (const std::runtime_error& e) {
+    std::cout << "Gen Error, remove output";
+    std::filesystem::remove(GetOutputPath());
+    throw e;
   }
 }
 
