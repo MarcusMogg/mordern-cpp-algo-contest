@@ -43,6 +43,7 @@ inline std::string_view LctypeToCtype(std::string_view lctype) {
       {"character[][]", "std::vector<std::vector<char>>"},
       {"double", "double"},
       {"double[]", "std::vector<double>"},
+      {"list<TreeNode>", "std::vector<TreeNode*>"},
   };
 
   const auto it = kConvertMap.find(lctype);
