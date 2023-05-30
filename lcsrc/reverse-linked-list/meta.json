@@ -1,0 +1,22 @@
+{
+ "exampleTestcases": "[1,2,3,4,5]\n[1,2]\n[]",
+ "name": "reverseList",
+ "params": [
+  {
+   "c_type": "ListNode*",
+   "dealloc": false,
+   "name": "head",
+   "need_ref": false,
+   "parser_type": "ListParser<IntParser>",
+   "type": "ListNode"
+  }
+ ],
+ "program_cname": "reverselinkedlist",
+ "program_name": "reverse-linked-list",
+ "return": {
+  "c_type": "ListNode*",
+  "dealloc": true,
+  "type": "ListNode"
+ },
+ "systemdesign": false
+}

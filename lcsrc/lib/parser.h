@@ -308,4 +308,34 @@ struct TreeParser {
   }
 };
 
+template <CanParse<InputType> T>
+struct ListParser {
+  using RealDataType = std::vector<typename T::DataType>;
+  // using TreeType = TreeNode<typename T::DataType>;
+  using NodeType = ListNode;
+  using DataType = NodeType*;
+
+  [[nodiscard]] static RealDataType ParseRawData(InputType test_cases) {
+    return VectorParser<T>::Parse(test_cases);
+  }
+
+  static DataType Parse(InputType test_cases) {
+    const auto raw_data = ParseRawData(test_cases);
+    DataType res{};
+    auto cur = res;
+    for (const auto& i : raw_data) {
+      auto* root = new NodeType(i);
+      if (cur == nullptr) {
+        res = root;
+        cur = res;
+      } else {
+        cur->next = root;
+        cur = cur->next;
+      }
+    }
+
+    return res;
+  }
+};
+
 }  // namespace leetcode::lib

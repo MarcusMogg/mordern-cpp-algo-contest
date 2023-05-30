@@ -44,6 +44,8 @@ inline std::string_view LctypeToCtype(std::string_view lctype) {
       {"double", "double"},
       {"double[]", "std::vector<double>"},
       {"list<TreeNode>", "std::vector<TreeNode*>"},
+      {"ListNode", "ListNode*"},
+
   };
 
   const auto it = kConvertMap.find(lctype);
@@ -55,7 +57,12 @@ inline std::string_view LctypeToCtype(std::string_view lctype) {
 
 inline bool NeedRef(std::string_view lctype) {
   // TODO(mogg): new type here
-  static const std::set<std::string_view> kConvertMap{"integer", "boolean", "TreeNode"};
+  static const std::set<std::string_view> kConvertMap{
+      "integer",
+      "boolean",
+      "TreeNode",
+      "ListNode",
+  };
 
   return !kConvertMap.contains(lctype);
 }
@@ -73,6 +80,7 @@ inline std::string_view LcParseType(std::string_view lctype) {
       {"boolean", "BoolParser"},
       {"TreeNode", "TreeParser<IntParser>"},
       {"character[][]", "VectorParser<VectorParser<CharParser>>"},
+      {"ListNode", "ListParser<IntParser>"},
   };
 
   const auto it = kConvertMap.find(lctype);
