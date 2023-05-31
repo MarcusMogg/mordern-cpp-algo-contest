@@ -17,15 +17,11 @@ int Solve(const std::vector<int>& arr) {
 namespace standard {
 int Solve(const std::vector<int>& arr) {
   auto dp = std::vector<std::vector<std::pair<int, int>>>(
-      arr.size(),
-      std::vector(
-          arr.size(),
-          std::pair{
-              std::numeric_limits<int>::min(),
-              std::numeric_limits<int>::max(),
-          }));
+      arr.size(), std::vector<std::pair<int, int>>(arr.size()));
+  int sum = 0;
   for (int i = 0; i < arr.size(); ++i) {
     dp[i][i] = {arr[i], arr[i]};
+    sum += arr[i];
   }
   for (int len = 2; len <= arr.size(); ++len) {
     for (int i = 0; i + len <= arr.size(); ++i) {
@@ -40,7 +36,7 @@ int Solve(const std::vector<int>& arr) {
     }
   }
 
-  return dp[0].back().second - std::accumulate(arr.begin(), arr.end(), 0);
+  return dp[0].back().second - sum;
 }
 }  // namespace standard
 
