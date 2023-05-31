@@ -1,0 +1,20 @@
+{
+ "exampleTestcases": "[6,2,4]\n[4,11]",
+ "name": "mctFromLeafValues",
+ "params": [
+  {
+   "c_type": "std::vector<int>",
+   "name": "arr",
+   "need_ref": true,
+   "parser_type": "VectorParser<IntParser>",
+   "type": "integer[]"
+  }
+ ],
+ "program_cname": "minimumcosttreefromleafvalues",
+ "program_name": "minimum-cost-tree-from-leaf-values",
+ "return": {
+  "c_type": "int",
+  "type": "integer"
+ },
+ "systemdesign": false
+}
