@@ -1,0 +1,27 @@
+{
+ "exampleTestcases": "[\"aba\",\"bcb\",\"ece\",\"aa\",\"e\"]\n[[0,2],[1,4],[1,1]]\n[\"a\",\"e\",\"i\"]\n[[0,2],[0,1],[2,2]]",
+ "name": "vowelStrings",
+ "params": [
+  {
+   "c_type": "std::vector<std::string>",
+   "name": "words",
+   "need_ref": true,
+   "parser_type": "VectorParser<StringParser>",
+   "type": "string[]"
+  },
+  {
+   "c_type": "std::vector<std::vector<int>>",
+   "name": "queries",
+   "need_ref": true,
+   "parser_type": "VectorParser<VectorParser<IntParser>>",
+   "type": "integer[][]"
+  }
+ ],
+ "program_cname": "countvowelstringsinranges",
+ "program_name": "count-vowel-strings-in-ranges",
+ "return": {
+  "c_type": "std::vector<int>",
+  "type": "integer[]"
+ },
+ "systemdesign": false
+}
