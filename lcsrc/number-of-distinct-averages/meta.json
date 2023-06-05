@@ -1,0 +1,20 @@
+{
+ "exampleTestcases": "[4,1,4,0,3,5]\n[1,100]",
+ "name": "distinctAverages",
+ "params": [
+  {
+   "c_type": "std::vector<int>",
+   "name": "nums",
+   "need_ref": true,
+   "parser_type": "VectorParser<IntParser>",
+   "type": "integer[]"
+  }
+ ],
+ "program_cname": "numberofdistinctaverages",
+ "program_name": "number-of-distinct-averages",
+ "return": {
+  "c_type": "int",
+  "type": "integer"
+ },
+ "systemdesign": false
+}
