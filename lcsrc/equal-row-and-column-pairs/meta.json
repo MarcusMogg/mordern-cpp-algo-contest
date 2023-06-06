@@ -1,0 +1,20 @@
+{
+ "exampleTestcases": "[[3,2,1],[1,7,6],[2,7,7]]\n[[3,1,2,2],[1,4,4,5],[2,4,2,2],[2,4,2,2]]",
+ "name": "equalPairs",
+ "params": [
+  {
+   "c_type": "std::vector<std::vector<int>>",
+   "name": "grid",
+   "need_ref": true,
+   "parser_type": "VectorParser<VectorParser<IntParser>>",
+   "type": "integer[][]"
+  }
+ ],
+ "program_cname": "equalrowandcolumnpairs",
+ "program_name": "equal-row-and-column-pairs",
+ "return": {
+  "c_type": "int",
+  "type": "integer"
+ },
+ "systemdesign": false
+}
