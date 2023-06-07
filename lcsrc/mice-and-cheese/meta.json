@@ -1,0 +1,34 @@
+{
+ "exampleTestcases": "[1,1,3,4]\n[4,4,1,1]\n2\n[1,1]\n[1,1]\n2",
+ "name": "miceAndCheese",
+ "params": [
+  {
+   "c_type": "std::vector<int>",
+   "name": "reward1",
+   "need_ref": true,
+   "parser_type": "VectorParser<IntParser>",
+   "type": "integer[]"
+  },
+  {
+   "c_type": "std::vector<int>",
+   "name": "reward2",
+   "need_ref": true,
+   "parser_type": "VectorParser<IntParser>",
+   "type": "integer[]"
+  },
+  {
+   "c_type": "int",
+   "name": "k",
+   "need_ref": false,
+   "parser_type": "IntParser",
+   "type": "integer"
+  }
+ ],
+ "program_cname": "miceandcheese",
+ "program_name": "mice-and-cheese",
+ "return": {
+  "c_type": "int",
+  "type": "integer"
+ },
+ "systemdesign": false
+}
