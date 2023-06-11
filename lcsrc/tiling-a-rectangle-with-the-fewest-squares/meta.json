@@ -1,0 +1,27 @@
+{
+ "exampleTestcases": "2\n3\n5\n8\n11\n13",
+ "name": "tilingRectangle",
+ "params": [
+  {
+   "c_type": "int",
+   "name": "n",
+   "need_ref": false,
+   "parser_type": "IntParser",
+   "type": "integer"
+  },
+  {
+   "c_type": "int",
+   "name": "m",
+   "need_ref": false,
+   "parser_type": "IntParser",
+   "type": "integer"
+  }
+ ],
+ "program_cname": "tilingarectanglewiththefewestsquares",
+ "program_name": "tiling-a-rectangle-with-the-fewest-squares",
+ "return": {
+  "c_type": "int",
+  "type": "integer"
+ },
+ "systemdesign": false
+}

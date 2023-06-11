@@ -1,0 +1,20 @@
+{
+ "exampleTestcases": "[1,2,-3,3,1]\n[1,2,3,-3,4]\n[1,2,3,-3,-2]",
+ "name": "removeZeroSumSublists",
+ "params": [
+  {
+   "c_type": "ListNode*",
+   "name": "head",
+   "need_ref": false,
+   "parser_type": "ListParser<IntParser>",
+   "type": "ListNode"
+  }
+ ],
+ "program_cname": "removezerosumconsecutivenodesfromlinkedlist",
+ "program_name": "remove-zero-sum-consecutive-nodes-from-linked-list",
+ "return": {
+  "c_type": "ListNode*",
+  "type": "ListNode"
+ },
+ "systemdesign": false
+}

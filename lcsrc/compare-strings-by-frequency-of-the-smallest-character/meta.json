@@ -1,0 +1,27 @@
+{
+ "exampleTestcases": "[\"cbd\"]\n[\"zaaaz\"]\n[\"bbb\",\"cc\"]\n[\"a\",\"aa\",\"aaa\",\"aaaa\"]",
+ "name": "numSmallerByFrequency",
+ "params": [
+  {
+   "c_type": "std::vector<std::string>",
+   "name": "queries",
+   "need_ref": true,
+   "parser_type": "VectorParser<StringParser>",
+   "type": "string[]"
+  },
+  {
+   "c_type": "std::vector<std::string>",
+   "name": "words",
+   "need_ref": true,
+   "parser_type": "VectorParser<StringParser>",
+   "type": "string[]"
+  }
+ ],
+ "program_cname": "comparestringsbyfrequencyofthesmallestcharacter",
+ "program_name": "compare-strings-by-frequency-of-the-smallest-character",
+ "return": {
+  "c_type": "std::vector<int>",
+  "type": "integer[]"
+ },
+ "systemdesign": false
+}
